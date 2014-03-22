@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="\n Today we are going to create a mailer class that will assist us in emailing site visitors. Lets start out buy creating the class and the variables &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/blog/page/11/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/13/object-oriented-php-lesson-3-coding-a-mailer-class/">Object Oriented PHP Lesson 3 Coding a Mailer Class</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-13T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Today we are going to create a mailer class that will assist us in emailing site visitors.  Lets start out buy creating the class and the variables we will need.</p>
+
+<pre><code>class Mailer {
+
+}
+</code></pre>
+
+<p>Okay, let see.  We will need a sender, a recipient, a subject and a body. Well, if you know anything about email, the sender is set in the header.  So&hellip;</p>
+
+<pre><code>class Mailer {
+    var $headers; 
+    var $recipient;
+    var $subject; 
+    var $message;  
+}
+</code></pre>
+
+<p>Now comes the fun part!  Lets build the email!</p>
+
+<p>First we have a from setter:</p>
+
+<pre><code>function from($email, $name){   
+     $this-&gt;headers[] = 'From: '.$email.' ';
+ }
+</code></pre>
+
+<p>What we have done, is we have appended the required format for the Header.  In php the &lsquo;.&rsquo; is what we use to concatenate strings and variable data together.  Also, note that the header is an array.  We could add more than just &ldquo;From&rdquo; to the header if we needed to.</p>
+
+<p>Now we add rest of the functions.</p>
+
+<pre><code>function add_recipient($email){
+
+    $this-&gt;recipient = $email;
+ }
+
+
+ function subject($subject){  
+
+    $this-&gt;subject = $subject;
+ }
+
+ function message($message) {
+
+    $this-&gt;message = $message;
+ }
+</code></pre>
+
+<p>Notice that we don&rsquo;t have any getter methods defined.  Although it&rsquo;s a good practice to have them in your class for a program, it would just add extra stuff to a class that&rsquo;s sole purpose in life is to run a contact me page.  Now, if you wanted to use this in a larger site.  Say a cms or a social portal, you would want to add a bunch more functions to it.  That way you could get all of your email functionality out of a single class file.</p>
+
+<p>But for now, this is enough.  Let&rsquo;s create a utillity function to send the mail.</p>
+
+<pre><code>function send()
+{  //sends the email
+
+    $headers = "";
+        foreach($this-&gt;headers as $header)
+        {
+           $headers .= $header.';';
+        }
+        return mail($this-&gt;recipient, $this-&gt;subject, $this-&gt;message, $headers);
+ }
+</code></pre>
+
+<p>Essentially, we add all the header information, then the rest of the data is pulled into the mail function.</p>
+
+<p>And how do we use this?  By now I hope that you understand the layout of my driver files.  So it&rsquo;s your turn.  Create a contact form and use this class to make it work.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/11/object-oriented-php-lesson-2/">Object Oriented PHP Lesson 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-11T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Yesterday we talked about some basics in oo php programming.  To day I am going to show you how to extend a class and also how to be utillity methods (functions) in your class.</p>
+
+<p>Yesterday we created a car class called Car.  To today we will extend that class with a sportsCarClass.  Why, you might ask, do we want to do this?  It&rsquo;s simple.  I might want to create several different types of cars. Maybe I want a SUV car object, or a truck object. All of these objects will have certain properties that are the same (make, model, color, ect)  Why wouldn&rsquo;t I reuse the code that I already have?  I could copy-paste, but that would only serve to make my program a whole lot larger than it needs to be.  So, instead, I&rsquo;ll extend my base class to make other classes.  The one that I&rsquo;ll be demonstrating is the sportsCarClass.  We start out by declaring the class and extending the base class, followed by declaring any variables that this new class will be using.</p>
+
+<pre><code>class sportsCar extends Car  {
+    var $engine;
+}
+</code></pre>
+
+<p>In case you are wondering, this is in the same class file as our original carClass.</p>
+
+<p>Next we will define some setter and getter functions for the sports car class.</p>
+
+<pre><code>function add_engine($type){ 
+
+    $this-&gt;engine = $type;
+ }
+    function get_engine(){  
+
+     return $this-&gt;engine;
+ }
+</code></pre>
+
+<p>I don&rsquo;t need to show you how to use this in your driver program.  Give it a go!  You will notice that you can create a new sportsCar and set make, model, color and engine and it will work, even though you don&rsquo;t have any setter functions for make, model or color in your class.  Also, if you try and set the engine type in a Car, it will fail because Car cannot see sportsCar.</p>
+
+<p>At this point, it might be a good time to point out a few items of importance.  Did you notice that in our driver program we call the functions using the class name followed by &ndash;> and the function?  We refer to the variables in our class in the same way, but we use $this instead of the class name.  This is important, because we can also use this to pull variables into other function in our class in this same way.</p>
+
+<p>Lets make a utillity function that will display our object in an easy to read format.</p>
+
+<pre><code>function show_car(){
+            echo('Make: '.$this-&gt;make.'');
+            echo('Model: '.$this-&gt;model.'');
+            echo('Color: '.$this-&gt;color.'');
+            echo('Engine: '.$this-&gt;engine.'');
+}
+</code></pre>
+
+<p>Next time we will use oo programming to do something infinitely more useful.  We will create a mailer class that can be used in a contact form.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/11/a-lesson-in-object-oriented-php/">A Lesson in Object Oriented PHP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-11T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    I&rsquo;ve casually referenced oo php recently.  So here I am going to give a more formal tutorial on object oriented php for anyone out there who is unaware of OO programming in general.  If you are familiar with OO programming, you will understand everything immediately.</p>
+
+<p>The first thing that we are going to create is a class.  This class will allow us to make an object based on that class.</p>
+
+<p>Think of a class as a cookie cutter.  We make objects from this class.  Each object should be the same as all the others, except for the data that we place into the object.</p>
+
+<pre><code>class Car
+{  
+   var $make;      
+   var $model;
+}
+</code></pre>
+
+<p>Here we have defined our class &ldquo;Car&rdquo; as well as two variables, &ldquo;make&rdquo; and &ldquo;model.&rdquo;  Now we have to make some setter methods for our class</p>
+
+<pre><code>function add_make($name)
+ {  
+    $this-&gt;make = $name;
+ }
+</code></pre>
+
+<p> function add_model($name)</p>
+
+<pre><code> {  
+    $this-&gt;model = $name;
+ }
+</code></pre>
+
+<p>These two functions set the variables for the make and model.  The next functions are called getter methods, because they &lsquo;get&rsquo; the data from the object.</p>
+
+<pre><code>function get_make()
+{  
+   return $this-&gt;make;
+}
+
+function get_model()
+{ 
+    return $this-&gt;model;
+}
+</code></pre>
+
+<p>Next we will build a driver file to test out our class.</p>
+
+<pre><code>require_once('carClass.php');
+
+$myCar = new Car;
+$myCar-&gt;add_make("Ford");
+$myCar-&gt;add_model("Explorer");
+
+
+echo $myCar-&gt;get_make();
+echo $myCar-&gt;get_model();
+</code></pre>
+
+<p>Basically, we first create a new object &ldquo;Car&rdquo; called myCar.  Then we add a make and a model to the Car object.  Finally, we echo off the variables to see what we have set them as.</p>
+
+<p>Here is the complete class file for you to study.  For homework, make a getter and setter method for color and then add it to the driver file.</p>
+
+<p>carClass.php:</p>
+
+<pre><code>class Car
+{  
+   var $make;      
+   var $model;
+   var $color;
+
+
+ function add_make($name)
+ {  
+    $this-&gt;make = $name;
+ }
+
+ function add_model($name)
+ {  
+    $this-&gt;model = $name;
+ }
+
+ function get_make()
+ {  
+    return $this-&gt;make;
+ }
+
+ function get_model()
+ {  
+     return $this-&gt;model;
+ }
+
+
+}
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/03/why-do-you-think-its-called-computer-science/">Why Do You Think It&#8217;s Called Computer Science?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-03T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Editing this post a little bit due to feed back from my friends.  I really didn&rsquo;t make my self clear originally.</p>
+
+<p>For starters, I would like to quote something from reddit <a href="http://www.reddit.com/r/programming/comments/9vglo/dae_find_programmers_difficult_to_work_with/">full post</a></p>
+
+<blockquote><p>I guess what it really comes down to is that programmers, especially young ones, need to be right and need to be seen as super smart. >They crave rules, discipline and order while at the same time regarding themselves as creative and ingenious beings. They seem to need >these things as if their entire self-image depends on it, cognitive dissonance be damned.</p></blockquote>
+
+<p>I was reading this post the otherday,  and it dawned on me how many times I&rsquo;ve heard programming and art used in the same sentence.  WordPress even has the phrase &ldquo;Code is Poetry&rdquo; on their website.  I don&rsquo;t know about you, but the last time that I looked at the degree, it says BS degree and the major is &ldquo;Computer Science.&rdquo;  My friend Ian and I have also had several discussions on this topic.  My thoughts on this are that we are engineers, not artists.  At the end of the day, the client who pays me will not care if my code looks like &ldquo;Poetry&rdquo; or is &ldquo;beautiful&rdquo;  He or she will only care if it works.  Now, this doesn&rsquo;t mean that I believe in sloppy code writing, and yes, code can be beautiful.  The cleaner the code the easier it is to read.  Jed mentioned a great article in the comments below and I think that it puts a great view on it all.  At the end of the day, I feel that we should always place the greater emphasis on the science and not the art.  Of course, this is just the opinion of one man and if you don&rsquo;t agree with me, thats okay.  We can still be friends :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/10/28/writing-an-array-to-csv-in-php/">Writing an Array to CSV in PHP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-28T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    The CSV format is a very handy format mucking around in data.  In case you have to write some data into a CSV file, here&rsquo;s some code for your parsing needs.  Quite a few classes exist to both read and write CSV files.  I have a class that I use to read csv into a database and another to create a csv file from a database&hellip;Both are killer classes that have great uses (and believe me I have used them) but sometimes you want a little bit of a simpler solution.  Just because php can be an OO language doesn&rsquo;t mean that you have to do everything in php the OO way.  The two main functions that we use for csv files are fopen and fputcsv.  If you have never used file handling in php before, do some reading up on the functions first.</p>
+
+<pre><code>$file = fopen("file.csv", "x");
+</code></pre>
+
+<p>In this example, we are actually creating a file called file.csv.  The key is in the second variable.  r,w,x are the basics.  Read, Write, Create.</p>
+
+<p>The second part of this lies in creating the file and putting the data into the csv file.  For this, we will use an array.</p>
+
+<pre><code>$list = array (
+    'Order,Customer,Date,Item,Quantity',
+    '001, John Doe, 001, 3);
+</code></pre>
+
+<p>This will create the headers and then add a row of data.  We have several choices here.  We can create the headers separately or we can create the entire file all at once.  Depending on how your data is structured, either way works</p>
+
+<p>Finally, we need to write the data to the csv file.  To do this, we are going to make use of the fputcsv function,</p>
+
+<pre><code>foreach ($list as $line) {
+    fputcsv($fp, split(',', $line));
+}
+</code></pre>
+
+<p>We have put the function in a foreach loop to make sure that each line in the array is read, parsed and written to the file. First we pass the file, $fp.  Then we tell fputcsv what to use for a deliminator and what to to put on the line.</p>
+
+<p>Make sure that you check out the php manual for more details on these funcitons.  There is a lot of power here waiting to be used.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/12/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/10/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/a-new-post/">a new post</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+
+</ul>
+  </section>
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

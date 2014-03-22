@@ -1,0 +1,90 @@
+<p>\n    I&rsquo;ve casually referenced oo php recently.  So here I am going to give a more formal tutorial on object oriented php for anyone out there who is unaware of OO programming in general.  If you are familiar with OO programming, you will understand everything immediately.</p>
+
+<p>The first thing that we are going to create is a class.  This class will allow us to make an object based on that class.</p>
+
+<p>Think of a class as a cookie cutter.  We make objects from this class.  Each object should be the same as all the others, except for the data that we place into the object.</p>
+
+<pre><code>class Car
+{  
+   var $make;      
+   var $model;
+}
+</code></pre>
+
+<p>Here we have defined our class &ldquo;Car&rdquo; as well as two variables, &ldquo;make&rdquo; and &ldquo;model.&rdquo;  Now we have to make some setter methods for our class</p>
+
+<pre><code>function add_make($name)
+ {  
+    $this-&gt;make = $name;
+ }
+</code></pre>
+
+<p> function add_model($name)</p>
+
+<pre><code> {  
+    $this-&gt;model = $name;
+ }
+</code></pre>
+
+<p>These two functions set the variables for the make and model.  The next functions are called getter methods, because they &lsquo;get&rsquo; the data from the object.</p>
+
+<pre><code>function get_make()
+{  
+   return $this-&gt;make;
+}
+
+function get_model()
+{ 
+    return $this-&gt;model;
+}
+</code></pre>
+
+<p>Next we will build a driver file to test out our class.</p>
+
+<pre><code>require_once('carClass.php');
+
+$myCar = new Car;
+$myCar-&gt;add_make("Ford");
+$myCar-&gt;add_model("Explorer");
+
+
+echo $myCar-&gt;get_make();
+echo $myCar-&gt;get_model();
+</code></pre>
+
+<p>Basically, we first create a new object &ldquo;Car&rdquo; called myCar.  Then we add a make and a model to the Car object.  Finally, we echo off the variables to see what we have set them as.</p>
+
+<p>Here is the complete class file for you to study.  For homework, make a getter and setter method for color and then add it to the driver file.</p>
+
+<p>carClass.php:</p>
+
+<pre><code>class Car
+{  
+   var $make;      
+   var $model;
+   var $color;
+
+
+ function add_make($name)
+ {  
+    $this-&gt;make = $name;
+ }
+
+ function add_model($name)
+ {  
+    $this-&gt;model = $name;
+ }
+
+ function get_make()
+ {  
+    return $this-&gt;make;
+ }
+
+ function get_model()
+ {  
+     return $this-&gt;model;
+ }
+
+
+}
+</code></pre>

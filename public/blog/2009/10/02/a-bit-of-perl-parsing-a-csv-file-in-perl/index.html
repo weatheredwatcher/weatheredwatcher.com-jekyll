@@ -1,0 +1,48 @@
+<p>\n    I&rsquo;ve been working on a solution that takes uploaded CSV files and parses them to process the data (in my case ultimately it will live in a database)  Here is some sample code that I put together in my sand-box that takes care of parsing the data in to an array.  <em>DISCLAIMER</em> This is not a newbie tutorial.  If you don&rsquo;t already understand perl and oo programming, you might be a little bit lost.  This solution requires the Text::CSV module from CPAN (Right here)</p>
+
+<pre><code>#!/usr/bin/perl
+# Sandbox application for testing perl script CSV parse
+
+use strict;
+use warnings;
+use Text::CSV
+
+my $csv = Text::CSV-&gt;new();
+
+open (CSV, ") {
+                next if ($. == 1); 
+                if ($csv-&gt;parse($_)) {
+                    my @columns = $csv-&gt;fields();
+                    print "tBusiness Name: $columns[0]ntContact: $columns[1]ntMessage: $columns[11]nn";
+                    print "t----------------------------nn";
+            } else {
+                    my $err = $csv-&gt;error_input;
+                    print "Failed to parse line: $err";
+            }
+
+
+
+    }
+
+    close CSV;
+    exit;
+</code></pre>
+
+<p>Okay, lets break this down a bit.  The first thing that we do (after loading all the mods) is to create a new csv object.</p>
+
+<pre><code>my $csv = Text::CSV-&gt;new();
+</code></pre>
+
+<p>Then the while() line iterates through the file.</p>
+
+<p>This code pareses and displays the data:</p>
+
+<pre><code>if ($csv-&gt;parse($_)) {
+        my @columns = $csv-&gt;fields();
+        print "tBusiness Name: $columns[0]ntContact: $columns[1]ntMessage: $columns[11]nn";
+        print "t----------------------------nn";
+</code></pre>
+
+<p>The thing that you need to keep in mind for later is that all the data is stored in an array called @columns.  We can access the data by specifying which array item to use.  Like most languages, we use [n] to tell which item to use.</p>
+
+<p>Next time I will write about how you can take this parsed data and insert it into a database.</p>

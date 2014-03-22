@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="\n I threw up a quick site from iWeb for my daughter not too long ago and I&rsquo;ve decided to create a custom site for her all in Ruby on Rails.   &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/blog/page/14/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/22/adventures-in-ruby/">Adventures in Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-22T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    I threw up a quick site from iWeb for my daughter not too long ago and I&rsquo;ve decided to create a custom site for her all in Ruby on Rails.  This is mainly to test out rails a bit more so I can form a decent opinion of it vs. php.  Today, I also decided to see how Textmate  does as a Rails coder vs. Coda (which I use mostly now).  I recently ran an update of rails on the mac and when I started to configure the site by typing rails foto_devochka, all I got was a string of errors.  I tried upgrading everything&hellip;no luck.  I finally found a post on a Rails site that seemed to address my issue.  They recommended:</p>
+
+<pre><code>sudo gem update
+sudo gem update --system
+sudo gem install rails
+</code></pre>
+
+<p>After this completed, rails worked again.  I created the app and tried to view it in the browser.  No dice.  I checked the dbase configuration.  Looked good.  Checked the server output.  It was complaining about sqlite.  Sqlite ships with Mac, so I&rsquo;ve never installed it before, but apparently, when I reinstalled rails, it lost all the gems. So:</p>
+
+<pre><code>sudo gem install sqlite3-ruby
+</code></pre>
+
+<p>Did the trick.</p>
+
+<p>With that little technical garbage out of the way, here is my setup for Textmate.  I&rsquo;m using Textmate in one space for development, a terminal in another space for server/console and I have safari loaded in a third space for testing.  I can easily switch between them using key-strokes, or clicking on the right icon in the dock.  The only issue that I can see is the one of ftp&#8217;ing stuff.  In Coda it is automatic.  I&rsquo;ll need yet another program to upload files with this set-up.</p>
+
+<p>I admit, I still use Mac&rsquo;s terminal with Coda.  I also use Safari for previewing.  So I&rsquo;m not really using Coda to it&rsquo;s &ldquo;full&rdquo; potential here.  I do use Coda to take a peek at my views, and I have used it for terminal stuff, but it is really just as easy to use the bash shell that comes natively with Mac.  It&rsquo;s that damn ftp feature that I love so much.  I seriously doubt that I&rsquo;ll ever use Textmate for full blown Rails or php development.  It&rsquo;ll make a great text editor though.  It really is the culmination of emacs.</p>
+
+<p>Let&rsquo;s get back to the site, shall we.  This is not my first site in Rails, so I quickly setup a framework and modify the routes.rb file.  Soon, my pages are working, just need a template now for the main pages.</p>
+
+<p>Here are the pages that I&rsquo;ll need:</p>
+
+<pre><code>script/generate controller Site index about gallery about
+</code></pre>
+
+<p>Then I create a site layout file.  IT contains the links.  A great little timesaver in rails is the</p>
+
+<pre><code>link_to_unless_current
+</code></pre>
+
+<p>This creates the link, but will not link to it if is the current page.  Makes for a bit cleaner page.  I don&rsquo;t use it everywhere, but it&rsquo;s a good thought.</p>
+
+<p>Now I just need some ajax goodies, so I&rsquo;ll load a bunch of javascript libraries that I&rsquo;ll need:</p>
+
+<pre><code>&lt;%= javascript_include_tag "prototype.js" %&gt;
+&lt;%= javascript_include_tag "scriptaculous.js?load=effects,builder" %&gt;
+&lt;%= javascript_include_tag "lightbox.js" %&gt;
+</code></pre>
+
+<p>Wow, it&rsquo;s looking good and in no time!   I do like the flow but now that I&rsquo;ve got a little something to upload, I know I&rsquo;ll start missing Coda.  Okay, so I&rsquo;m also going to miss Coda when it comes to css.  Coda has spoiled me with it&rsquo;s css editor.</p>
+
+<p>Well, that is it for now.  I&rsquo;ll be finishing up this site (in Coda) and then posting it to the web.  I&rsquo;ll post a link when it&rsquo;s fully functioning</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/20/my-pc-repair-ad/">My PC Repair Ad</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-20T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    I just put up a page on my main site about my services in PC Repair</p>
+
+<p>I also posted the ad on Craig&rsquo;s List and in the Columbia City Paper (online)  Know anyone who needs pc repairs done in the Columbia area?  Send them the link!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/19/last-fm-rocks/">Last.fm Rocks!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-19T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    I&rsquo;ve been scrobbling tracks to last.fm for years now.  I just recently listened to the last.fm recommends using the iPhone app.  It&rsquo;s been solid for every track.  I&rsquo;ve enjoyed everything.  It&rsquo;s a truly remarkable service when a computer can figure out exactly what kind of music you like!!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/18/some-updates/">Some Updates</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-18T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Just made a few updates. I added some simple jQuey navigation elements      to my ruby on rails site as well as some simple session managment to my personal site. As session management is very important to a dynamic site, I&rsquo;ll more than likely use that as my next tutorial entry.</p>
+
+<p>Currently without work for three weeks, hopefull. Things are looking good as far as prospects.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/13/a-simple-task-not-so-simple-solution/">A Simple task&#8230;not So Simple Solution</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-13T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Okay, so here is the situation:  I promised my brother that I&rsquo;d email him my current resume a week ago.  I currently do not live in a place with interwebs, so I am a slave to internet cafe&rsquo;s at the moment.  So, I continued to forget to send it to him.  I&rsquo;ve been meaning to upload my resume to google docs for some time now, and I decided to see if I could get my resume to my brother using nothing but my iphone.</p>
+
+<p>Round One:  I had at one point installed the free version of Savy Soda&rsquo;s Documents2.  I synced that back on the iphone and gave it a whirl.  Uploading a pdf of my resume to Documents2 was not that hard.  When I tried to load it into my Google Docs, it wouldn&rsquo;t do it.</p>
+
+<p>David 0 Failure 1</p>
+
+<p>Round Two:  Documents2 has the ability to email a doc to someone. I tried to
+1) email directly to my brother = Fail!
+2) email to google docs = Epic Fail!</p>
+
+<p>David 0 Fail 2</p>
+
+<p>Round Three:  I remember Evernote.  Everyone seems to love evernote.  I read about it all the time.  I even had an account.  I installed the iPhone app.  There is no way to sync wirelessly to it.  I need to have the note already on line or I need evernote installed on my mac.  Epic Fail!</p>
+
+<p>David 0 Fail 3</p>
+
+<p>Round Four:  The next day I am at an internet cafe.  I can, from here upload my resume to Google docs and to Evernote.  (I could of course, just email it to my brother but then I wouldn&rsquo;t be geek then would I!?) So Google Doc. This was my first thought.  Can&rsquo;t email the pdf to someone.  Google Docs won&rsquo;t allow it.  I upload my doc version but it gets slaughtered by Google Docs.  I upload the pdf to evernote, and then I can email it from my iPhone to anyone!!</p>
+
+<p>David over 9000 ftw! Fail 3</p>
+
+<p>Evernote, it is the beginning of a beautiful friendship!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/15/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/13/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/a-new-post/">a new post</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+
+</ul>
+  </section>
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

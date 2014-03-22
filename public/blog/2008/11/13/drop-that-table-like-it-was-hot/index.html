@@ -1,0 +1,23 @@
+<p>\n    Friday night I ran some code on the server and I had made a tiny but fatal error.  I mixed up a pair of booleans and code that should have made one set of seven tables, made thoose seven table over 1000 times!!  My mySql GUI tools were not upto the challenge.  I found a nifty little bit of code on the internet <a href="http://knaddison.com/technology/mysql-drop-all-tables-database-using-single-command-line-command">Check out the original here</a> that drops all the tables in database.  Drops &lsquo;em like they were hot!!</p>
+
+<pre><code>mysql -u uname dbname -e "show tables" | grep -v Tables_in | grep -v "+" |
+gawk '{print "drop table " $1 ","}' | mysql -u uname dbname
+</code></pre>
+
+<p>You could even do this from the iPhone!!  Here is a breakdown for anyone that is a bit rusty on bash:</p>
+
+<pre><code>mysql -u uname dbname -e "show tables"
+</code></pre>
+
+<p>This  (where uname is your username and dbname is your database name) run by itself will show you all the tables in the database.  You have to add the option &mdash;password=password if the mysql is protected.</p>
+
+<p>You then pipe it twice through grep -v (this show all BUT what you specify in grep.  And here comes the great part&hellip;.</p>
+
+<pre><code>gawk '{print "drop table " $1 ","}' | mysql -u uname dbname
+</code></pre>
+
+<p>You use gawk to print out &ldquo;drop table&rdquo; and pipe that through mysql again (just repeat minus the -e &ldquo;show tables&rdquo;)</p>
+
+<p>And viola!  problem solved!!</p>
+
+<p>David</p>

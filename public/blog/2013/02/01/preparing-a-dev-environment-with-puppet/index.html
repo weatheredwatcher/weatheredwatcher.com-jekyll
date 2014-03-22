@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Preparing a Dev Environment with Puppet - weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="For starts, I now have markup installed in my blog, so no more typing html!! Yea!\n
+Today we are going to talk about Puppet. No, not Pinochio, or &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Preparing a Dev Environment With Puppet</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-01T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>For starts, I now have markup installed in my blog, so no more typing html!! Yea!\n
+Today we are going to talk about Puppet.  No, not Pinochio, or those Punch and Judy dolls.  This is Puppet as in the server provisioning tool.</p>
+
+<p>At work I am setting up a development environment for our dev team.  Since most of them are just learning php, and for over all consistency I am using Vagrant to build a standard dev vm for everyone to work off of.</p>
+
+<p>The general requirements are simple:</p>
+
+<p> 1 We must run Zend Server
+ 2 We must load the php drivers MS Sql
+ 3 We must install subversion</p>
+
+<p>With these requirements in mind, I set out to build my first puppet script.</p>
+
+<p>The first class that we define is our services class.  I need to make sure that Apache is running.  Also, I found out that Cent Os turns iptables on by default.  That interferes with the dev box, as well as being unnecessary!  So we make sure that iptables is off.</p>
+
+<pre><code>class services {
+  #we want apache
+  service { 
+    'httpd':
+      ensure =&gt; running,
+      enable =&gt; true
+  }
+
+  service {
+    'iptables':
+      ensure =&gt; stopped,
+      enable =&gt; false
+  }
+}
+</code></pre>
+
+<p>The next two classes work in tandem.  The repos class defines our Zend Server repo and packages install the required packages.</p>
+
+<pre><code>class packages {
+  package {
+    "httpd":                      ensure =&gt; "present"; # Apache
+    "subversion":                 ensure =&gt; "present"; # Subversion
+    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+  }
+}
+
+
+class repos {
+  #lets install some repos
+  file { "/etc/yum.repos.d/zend.repo":
+    content =&gt; "[Zend]
+name=Zend Server
+baseurl=http://repos.zend.com/zend-server/rpm/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=http://repos.zend.com/zend.key
+
+[Zend_noarch]
+name=Zend Server - noarch
+baseurl=http://repos.zend.com/zend-server/rpm/noarch
+enabled=1
+gpgcheck=1
+gpgkey=http://repos.zend.com/zend.key
+    "
+  }
+
+}
+</code></pre>
+
+<p>If anyone wants to see the entire file, here it is:</p>
+
+<p>stage {</p>
+
+<p>  &lsquo;users&rsquo;:      before => Stage[&lsquo;repos&rsquo;];
+  &lsquo;repos&rsquo;:      before => Stage[&lsquo;packages&rsquo;];
+  &lsquo;packages&rsquo;:   before => Stage[&lsquo;configure&rsquo;];
+  &lsquo;configure&rsquo;:  before => Stage[&lsquo;services&rsquo;];
+  &lsquo;services&rsquo;:   before => Stage[&lsquo;main&rsquo;];</p>
+
+<p>}</p>
+
+<p>class services {
+  #we want apache
+  service {</p>
+
+<pre><code>'httpd':
+  ensure =&gt; running,
+  enable =&gt; true
+</code></pre>
+
+<p>  }</p>
+
+<p>  service {</p>
+
+<pre><code>'iptables':
+  ensure =&gt; stopped,
+  enable =&gt; false
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class configure {</p>
+
+<p>  # symlinking the code from /home/vagrant/public to var/www/public
+  exec { &ldquo;public simlink&rdquo;:</p>
+
+<pre><code>command =&gt; "/bin/ln -s /home/vagrant/public /var/www/",
+unless  =&gt; "/usr/bin/test -L /var/www/",
+</code></pre>
+
+<p>  }
+  file {&ldquo;/var/www/index.html&rdquo;:</p>
+
+<pre><code>ensure =&gt; "absent"
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class packages {
+  package {</p>
+
+<pre><code>"httpd":                      ensure =&gt; "present"; # Apache
+"subversion":                 ensure =&gt; "present"; # Subversion
+"zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+"php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class repos {</p>
+
+<p>  file { &ldquo;/etc/yum.repos.d/zend.repo&rdquo;:</p>
+
+<pre><code>content =&gt; "[Zend]
+</code></pre>
+
+<p>name=Zend Server
+baseurl=<a href="http://repos.zend.com/zend-server/rpm/x86_64">http://repos.zend.com/zend-server/rpm/x86_64</a>
+enabled=1
+gpgcheck=1
+gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
+
+<p>[Zend_noarch]
+name=Zend Server &ndash; noarch
+baseurl=<a href="http://repos.zend.com/zend-server/rpm/noarch">http://repos.zend.com/zend-server/rpm/noarch</a>
+enabled=1
+gpgcheck=1
+gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
+
+<pre><code>"
+</code></pre>
+
+<p>  }</p>
+
+<p>}</p>
+
+<p>class users
+{
+  group { &ldquo;puppet&rdquo;:</p>
+
+<pre><code>ensure =&gt; "present",
+</code></pre>
+
+<p>  }
+  user { &ldquo;vagrant&rdquo;:</p>
+
+<pre><code>ensure =&gt; "present",
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class {
+  users:      stage => &ldquo;users&rdquo;;
+  repos:      stage => &ldquo;repos&rdquo;;
+  packages:   stage => &ldquo;packages&rdquo;;
+  configure:  stage => &ldquo;configure&rdquo;;
+  services:   stage => &ldquo;services&rdquo;;</p>
+
+<p>}</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">weatheredwatcher</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-01T00:00:00-05:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/02/01/preparing-a-dev-environment-with-puppet/" data-via="davidduggins" data-counturl="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/02/01/preparing-a-dev-environment-with-puppet/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/24/running-multiple-apps-on-nodejs/" title="Previous Post: Running Multiple Apps On NodeJs">&laquo; Running Multiple Apps On NodeJs</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/09/28/a-new-post/" title="Next Post: a new post">a new post &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/a-new-post/">a new post</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+
+</ul>
+  </section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

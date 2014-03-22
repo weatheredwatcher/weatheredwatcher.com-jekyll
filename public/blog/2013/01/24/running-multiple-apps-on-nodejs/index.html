@@ -1,0 +1,86 @@
+<p>So, what I am wanting to so is to be able to run multiple apps on Nodejs.  Specifically, I want to be able to use node-static to server static files and some other app (yet to be determined) to server up my blog as flat files.  I&rsquo;ve done this before in Ruby using Rack and Sinatra&hellip;so I figure I would give Nodejs&rsquo;s Bogart a try!\n
+With a little bit of trial and error, I have come up with the best solution to this: Http-Proxy.</p>
+
+<p>The first thing to look at will be my packages.json file.</p>
+
+<pre><code>{
+    "name": "bogart-test",
+    "description": "Testing Bogart/FlatFile/Static structures",
+    "version": "0.1.0",
+    "author": "David Duggins",
+    "email": "David Duggins",
+    "main": "./app",
+    "directories": { "lib": "./lib" },
+    "dependencies": {
+      "node-static": "&gt;=0.6.5",
+      "bogart": "&gt;=0.2.0",
+      "mustache": "0.3.1-dev",
+      "http-proxy": "&gt;=0.0.0"
+    }
+}
+</code></pre>
+
+<p>The important stuff to note is node-static, bogart and node-static. I have not started to use mustache yet, but that may or may not be the templating engine.</p>
+
+<p>Bogart by itself is fairly straight-forward.  It&rsquo;s just as easy to configure as Sinatra is for Ruby or Silex for php.  It&rsquo;s just handles routes.</p>
+
+<p>var bogart = require(&lsquo;bogart&rsquo;);
+var router = bogart.router();</p>
+
+<p>router.get(&lsquo;/&rsquo;, function(req) {</p>
+
+<p>  return bogart.html(&ldquo;hello world&rdquo;);
+});</p>
+
+<p>var app = bogart.app();
+app.use(bogart.batteries); // A batteries included JSGI stack including streaming request body parsing, session, flash, and much more.
+app.use(router); // Our router</p>
+
+<p>app.start();</p>
+
+<p> The above example with simply echo &ldquo;Hello World&rdquo; on the index of our site.  It is set to use the default port 8080.  That cam be easily changed with     app.start(&lsquo;10000&rsquo;, &lsquo;127.0.0.1&rsquo;)</p>
+
+<p> The next part is node-static.  I want to be able to serve static files, like an about page.  Fairly simple as well:</p>
+
+<p>var static = require(&lsquo;node-static&rsquo;);</p>
+
+<p>//
+// Create a node-static server to serve the current directory
+//
+var file = new(static.Server)(&lsquo;.&rsquo;, { cache: 7200, headers: {&lsquo;X-Hello&rsquo;:&lsquo;World!&rsquo;} });</p>
+
+<p>require(&lsquo;http&rsquo;).createServer(function (request, response) {</p>
+
+<pre><code>request.addListener('end', function () {
+    //
+    // Serve files!
+    //
+    file.serve(request, response, function (err, res) {
+        if (err) { // An error as occured
+            console.error("&gt; Error serving " + request.url + " - " + err.message);
+            response.writeHead(err.status, err.headers);
+            response.end();
+        } else { // The file was served successfully
+            console.log("&gt; " + request.url + " - " + res.message);
+        }
+    });
+});
+</code></pre>
+
+<p>}).listen(1337);</p>
+
+<p>This code merely pulls any static files and servers them. It requires that you use naming conventions like index.html to make sure that a file is pulled up via &lsquo;/&rsquo;.  You also can call other pages just like you would on a normal apache server.
+The final part of this is configuring Bogart to use Http-proxy so that we can load the static pages only when we want to.
+ To load http-proxy we need these two lines:</p>
+
+<p>var http = require(&lsquo;http&rsquo;)
+, httpProxy = require(&lsquo;http-proxy&rsquo;);</p>
+
+<p> Then to use a proxy, we need this line:</p>
+
+<p>  router.get(&lsquo;/&rsquo;, function(req) {
+  return bogart.proxy(&lsquo;<a href="http://127.0.0.1:1337">http://127.0.0.1:1337</a>&rsquo;);
+});</p>
+
+<p>Remember that the static app is running on     1337.<br/>
+ Well that is all for now.  I will be working on the other parts of this experiment and write more on it later.</p>

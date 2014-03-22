@@ -1,0 +1,20 @@
+<p> I finally had the time to sit down and write a RSS feed for my blog.  I obviously wrote it in php using codeigniter.  There are a few good tutorials out there, but let me add my own ten cents to the pile!!\n
+ So the first spot is the controller.  I created a controller called Feed.  I also could have just created a method under my Blog controller, but I find this is a little bit neater code.</p>
+
+<pre><code>function index()
+{
+    $this-&gt;load-&gt;helper('inflector');
+        $this-&gt;load-&gt;helper('xml');  
+    $this-&gt;load-&gt;helper('text');  
+    $this-&gt;load-&gt;model('Blog_model', 'blog');    
+
+    $data['entries'] = $this-&gt;blog-&gt;get_last_ten_entries();
+    $this-&gt;load-&gt;view('rss', $data);
+
+
+}
+</code></pre>
+
+<p> This loads the required CI helpers, as well as by Blog Model.  Notice that I am using a custom method in my model to retrieve the last ten entries.  I am reusing the same method that populated my main blog page.</p>
+
+<p> The first thing to remember regarding the xml page that you define in your view is opening the xml using the echo statement.  The syntax would otherwise confuse the compiler.  After that we just use pure XML and insert our dynamic data with php short tags.  Surprisingly enough, that is it!</p>

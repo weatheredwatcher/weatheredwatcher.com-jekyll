@@ -1,0 +1,14 @@
+<p>\n    Okay, I&rsquo;m back!  After nearly a month out of the workforce, I am currently back at the old grindstone.  I am working on a contract with The State Media Company.  It&rsquo;s great to be back at coding again professionally!  Anyway, I got two tid bits to share with all.  The first involves sessions and the second headers.  The app that I am developing (can&rsquo;t get too much into it right now but I&rsquo;ll re-work some of the code for here laters) uses a lot of session work.  You MUST load the session before you do ANYTHING else.  Don&rsquo;t do it, it won&rsquo;t work!  About headers&hellip;&hellip;this is some cool stuff.  I use the code:</p>
+
+<pre><code>header("refresh: $sec, $url);
+</code></pre>
+
+<p>to reload a page after the form is validated.  Here is the catch: any program output and the header will not load.</p>
+
+<pre><code>echo("Form didn't Validate");
+header("refresh: $sec, $url);
+</code></pre>
+
+<p>This code above will result in epic fail.</p>
+
+<p>Another thing that I learned: I really needed to be using Netbeans for this.  My code was working yesterday, today not.  I had made changes to the code and had I been able to use internal versioning of Netbeans, I wouldn&rsquo;t have banged (too much) against the desk!</p>

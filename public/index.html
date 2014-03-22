@@ -9,7 +9,8 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="Blog Archives About Me Born in 1981 and creating chaos ever since. Father. Geek. Free Software Enthusist Recent Posts GitHub Repos Status updating&# &hellip;">
+  <meta name="description" content="
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -41,7 +42,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:yoursite.com" />
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -68,7 +69,465 @@
       <div class="blog-index">
   
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/28/a-new-post/">A New Post</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T10:46:00-04:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment With Puppet</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-01T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>For starts, I now have markup installed in my blog, so no more typing html!! Yea!\n
+Today we are going to talk about Puppet.  No, not Pinochio, or those Punch and Judy dolls.  This is Puppet as in the server provisioning tool.</p>
+
+<p>At work I am setting up a development environment for our dev team.  Since most of them are just learning php, and for over all consistency I am using Vagrant to build a standard dev vm for everyone to work off of.</p>
+
+<p>The general requirements are simple:</p>
+
+<p> 1 We must run Zend Server
+ 2 We must load the php drivers MS Sql
+ 3 We must install subversion</p>
+
+<p>With these requirements in mind, I set out to build my first puppet script.</p>
+
+<p>The first class that we define is our services class.  I need to make sure that Apache is running.  Also, I found out that Cent Os turns iptables on by default.  That interferes with the dev box, as well as being unnecessary!  So we make sure that iptables is off.</p>
+
+<pre><code>class services {
+  #we want apache
+  service { 
+    'httpd':
+      ensure =&gt; running,
+      enable =&gt; true
+  }
+
+  service {
+    'iptables':
+      ensure =&gt; stopped,
+      enable =&gt; false
+  }
+}
+</code></pre>
+
+<p>The next two classes work in tandem.  The repos class defines our Zend Server repo and packages install the required packages.</p>
+
+<pre><code>class packages {
+  package {
+    "httpd":                      ensure =&gt; "present"; # Apache
+    "subversion":                 ensure =&gt; "present"; # Subversion
+    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+  }
+}
+
+
+class repos {
+  #lets install some repos
+  file { "/etc/yum.repos.d/zend.repo":
+    content =&gt; "[Zend]
+name=Zend Server
+baseurl=http://repos.zend.com/zend-server/rpm/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=http://repos.zend.com/zend.key
+
+[Zend_noarch]
+name=Zend Server - noarch
+baseurl=http://repos.zend.com/zend-server/rpm/noarch
+enabled=1
+gpgcheck=1
+gpgkey=http://repos.zend.com/zend.key
+    "
+  }
+
+}
+</code></pre>
+
+<p>If anyone wants to see the entire file, here it is:</p>
+
+<p>stage {</p>
+
+<p>  &lsquo;users&rsquo;:      before => Stage[&lsquo;repos&rsquo;];
+  &lsquo;repos&rsquo;:      before => Stage[&lsquo;packages&rsquo;];
+  &lsquo;packages&rsquo;:   before => Stage[&lsquo;configure&rsquo;];
+  &lsquo;configure&rsquo;:  before => Stage[&lsquo;services&rsquo;];
+  &lsquo;services&rsquo;:   before => Stage[&lsquo;main&rsquo;];</p>
+
+<p>}</p>
+
+<p>class services {
+  #we want apache
+  service {</p>
+
+<pre><code>'httpd':
+  ensure =&gt; running,
+  enable =&gt; true
+</code></pre>
+
+<p>  }</p>
+
+<p>  service {</p>
+
+<pre><code>'iptables':
+  ensure =&gt; stopped,
+  enable =&gt; false
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class configure {</p>
+
+<p>  # symlinking the code from /home/vagrant/public to var/www/public
+  exec { &ldquo;public simlink&rdquo;:</p>
+
+<pre><code>command =&gt; "/bin/ln -s /home/vagrant/public /var/www/",
+unless  =&gt; "/usr/bin/test -L /var/www/",
+</code></pre>
+
+<p>  }
+  file {&ldquo;/var/www/index.html&rdquo;:</p>
+
+<pre><code>ensure =&gt; "absent"
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class packages {
+  package {</p>
+
+<pre><code>"httpd":                      ensure =&gt; "present"; # Apache
+"subversion":                 ensure =&gt; "present"; # Subversion
+"zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+"php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class repos {</p>
+
+<p>  file { &ldquo;/etc/yum.repos.d/zend.repo&rdquo;:</p>
+
+<pre><code>content =&gt; "[Zend]
+</code></pre>
+
+<p>name=Zend Server
+baseurl=<a href="http://repos.zend.com/zend-server/rpm/x86_64">http://repos.zend.com/zend-server/rpm/x86_64</a>
+enabled=1
+gpgcheck=1
+gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
+
+<p>[Zend_noarch]
+name=Zend Server &ndash; noarch
+baseurl=<a href="http://repos.zend.com/zend-server/rpm/noarch">http://repos.zend.com/zend-server/rpm/noarch</a>
+enabled=1
+gpgcheck=1
+gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
+
+<pre><code>"
+</code></pre>
+
+<p>  }</p>
+
+<p>}</p>
+
+<p>class users
+{
+  group { &ldquo;puppet&rdquo;:</p>
+
+<pre><code>ensure =&gt; "present",
+</code></pre>
+
+<p>  }
+  user { &ldquo;vagrant&rdquo;:</p>
+
+<pre><code>ensure =&gt; "present",
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class {
+  users:      stage => &ldquo;users&rdquo;;
+  repos:      stage => &ldquo;repos&rdquo;;
+  packages:   stage => &ldquo;packages&rdquo;;
+  configure:  stage => &ldquo;configure&rdquo;;
+  services:   stage => &ldquo;services&rdquo;;</p>
+
+<p>}</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps on NodeJs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So, what I am wanting to so is to be able to run multiple apps on Nodejs.  Specifically, I want to be able to use node-static to server static files and some other app (yet to be determined) to server up my blog as flat files.  I&rsquo;ve done this before in Ruby using Rack and Sinatra&hellip;so I figure I would give Nodejs&rsquo;s Bogart a try!\n
+With a little bit of trial and error, I have come up with the best solution to this: Http-Proxy.</p>
+
+<p>The first thing to look at will be my packages.json file.</p>
+
+<pre><code>{
+    "name": "bogart-test",
+    "description": "Testing Bogart/FlatFile/Static structures",
+    "version": "0.1.0",
+    "author": "David Duggins",
+    "email": "David Duggins",
+    "main": "./app",
+    "directories": { "lib": "./lib" },
+    "dependencies": {
+      "node-static": "&gt;=0.6.5",
+      "bogart": "&gt;=0.2.0",
+      "mustache": "0.3.1-dev",
+      "http-proxy": "&gt;=0.0.0"
+    }
+}
+</code></pre>
+
+<p>The important stuff to note is node-static, bogart and node-static. I have not started to use mustache yet, but that may or may not be the templating engine.</p>
+
+<p>Bogart by itself is fairly straight-forward.  It&rsquo;s just as easy to configure as Sinatra is for Ruby or Silex for php.  It&rsquo;s just handles routes.</p>
+
+<p>var bogart = require(&lsquo;bogart&rsquo;);
+var router = bogart.router();</p>
+
+<p>router.get(&lsquo;/&rsquo;, function(req) {</p>
+
+<p>  return bogart.html(&ldquo;hello world&rdquo;);
+});</p>
+
+<p>var app = bogart.app();
+app.use(bogart.batteries); // A batteries included JSGI stack including streaming request body parsing, session, flash, and much more.
+app.use(router); // Our router</p>
+
+<p>app.start();</p>
+
+<p> The above example with simply echo &ldquo;Hello World&rdquo; on the index of our site.  It is set to use the default port 8080.  That cam be easily changed with     app.start(&lsquo;10000&rsquo;, &lsquo;127.0.0.1&rsquo;)</p>
+
+<p> The next part is node-static.  I want to be able to serve static files, like an about page.  Fairly simple as well:</p>
+
+<p>var static = require(&lsquo;node-static&rsquo;);</p>
+
+<p>//
+// Create a node-static server to serve the current directory
+//
+var file = new(static.Server)(&lsquo;.&rsquo;, { cache: 7200, headers: {&lsquo;X-Hello&rsquo;:&lsquo;World!&rsquo;} });</p>
+
+<p>require(&lsquo;http&rsquo;).createServer(function (request, response) {</p>
+
+<pre><code>request.addListener('end', function () {
+    //
+    // Serve files!
+    //
+    file.serve(request, response, function (err, res) {
+        if (err) { // An error as occured
+            console.error("&gt; Error serving " + request.url + " - " + err.message);
+            response.writeHead(err.status, err.headers);
+            response.end();
+        } else { // The file was served successfully
+            console.log("&gt; " + request.url + " - " + res.message);
+        }
+    });
+});
+</code></pre>
+
+<p>}).listen(1337);</p>
+
+<p>This code merely pulls any static files and servers them. It requires that you use naming conventions like index.html to make sure that a file is pulled up via &lsquo;/&rsquo;.  You also can call other pages just like you would on a normal apache server.
+The final part of this is configuring Bogart to use Http-proxy so that we can load the static pages only when we want to.
+ To load http-proxy we need these two lines:</p>
+
+<p>var http = require(&lsquo;http&rsquo;)
+, httpProxy = require(&lsquo;http-proxy&rsquo;);</p>
+
+<p> Then to use a proxy, we need this line:</p>
+
+<p>  router.get(&lsquo;/&rsquo;, function(req) {
+  return bogart.proxy(&lsquo;<a href="http://127.0.0.1:1337">http://127.0.0.1:1337</a>&rsquo;);
+});</p>
+
+<p>Remember that the static app is running on     1337.<br/>
+ Well that is all for now.  I will be working on the other parts of this experiment and write more on it later.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-09T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A few days ago I went ahead and I install Cloud9 ide onto my laptop.  I&rsquo;ve been using the cloud version for editing this site as well as some other git-hub based sites and I love it.  I didn&rsquo;t think that I could love it even more then I did before, but I do!\n Locally, I can launch a workspace and start editing local files&hellip;and the console gives me complete shell access to my system!  I&rsquo;m working on a project that is being managed with subversion =( and the design team is using sass.  So when a change is made in the core style, I can go to the console and update the svn then compile sass with compass  and we are good to go!!
+ Obviously I also use it with all my projects that are git based as well!!  It&rsquo;s very nice.  It&rsquo;s also very helpful with my New Years Resolution to learn Node.  Cloud9 is node based and gives a GREAT environment to develop node in.  Also, when I am using a single screen of the laptop, it&rsquo;s a great space saver.  C9 loads up in Chrome right next to the site I am working on.  I have all the Dev tools handy and can just go back and forth between the tabs!!
+So go ahead and give it a try!  You can install it as easy as pie&hellip;look into the git hub repo: <a href="https://github.com/ajaxorg/cloud9!!">https://github.com/ajaxorg/cloud9!!</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/07/2013-is-here-people/">2013 Is Here People</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-07T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Well, it&rsquo;s here.  2013.  We made it!  2012 was a blast, but now we have another year to make plans for and strive for greatness!  I am pleased to say that a majority of my resolutions from last year where meet!  So, in that spirit, I shall now give you all my goals for 2013\n
+  * Learn Node.js
+  * Finish my python VHost app
+  * Write a better mysql gui for *nix
+  * Become a Debian Developer
+  * Speak even more on php and Open Source
+  * Get at least five articles published
+  * Get started on my php book
+  * Switch from CodeIgniter to Lithium</p>
+
+<p>So there it is!  My little wish list for 2013!
+I&rsquo;ve install cloud9 ide on my laptop today (if you are wondering, I will blog about it next) and in that is a good start on the Node js.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -89,6 +548,26 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/a-new-post/">a new post</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
     
   </ul>
 </section>
