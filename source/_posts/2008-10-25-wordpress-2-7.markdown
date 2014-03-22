@@ -1,0 +1,7 @@
+---
+layout: entry
+title: Wordpress 2.7
+---
+
+\n    I just downloaded the nightly of Wordpress 2.7 and I installed it on my server.  I am loving it.  The new dashboard layout it absolutely killer.  It is very easy to navigate and the gui in easily understandable.  The old Dashboard was fine, but this is so much better.  I haven't come across any bugs that relate to the way I do things either.
+  

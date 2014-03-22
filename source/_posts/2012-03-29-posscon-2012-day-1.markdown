@@ -1,0 +1,6 @@
+---
+layout: entry
+title: POSSCON 2012 Day 1
+---
+
+Well, I am not going to sleep until I blog about POSSCON.  It really started yesterday evening with the Engine Yard Beer Social.  That was a ton of fun! Then today we had a blast.  A bunch of great talks.  Dave Stokes gave a great talk about some of the new stuff to expect in the next version of MySQL...it's exciting.  Also, great talks from the president of SugarCRM, Mad Dog, and others.  It was a great start.  And of course then end of the day was the Git Hub Drink UP.  Wow!!  What a crowd!!  Certainly the biggest POSSCON ever!!
