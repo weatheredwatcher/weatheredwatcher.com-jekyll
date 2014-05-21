@@ -1,86 +1,436 @@
-<p>So, what I am wanting to so is to be able to run multiple apps on Nodejs.  Specifically, I want to be able to use node-static to server static files and some other app (yet to be determined) to server up my blog as flat files.  I&rsquo;ve done this before in Ruby using Rack and Sinatra&hellip;so I figure I would give Nodejs&rsquo;s Bogart a try!\n
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Running Multiple Apps On NodeJs - weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="So, what I am wanting to so is to be able to run multiple apps on Nodejs. Specifically, I want to be able to use node-static to server static files &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/24/running-multiple-apps-on-nodejs/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span id="sub-title" class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Running Multiple Apps on NodeJs</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>So, what I am wanting to so is to be able to run multiple apps on Nodejs.  Specifically, I want to be able to use node-static to server static files and some other app (yet to be determined) to server up my blog as flat files.  I&rsquo;ve done this before in Ruby using Rack and Sinatra&hellip;so I figure I would give Nodejs&rsquo;s Bogart a try!\n
 With a little bit of trial and error, I have come up with the best solution to this: Http-Proxy.</p>
 
 <p>The first thing to look at will be my packages.json file.</p>
 
-<pre><code>{
-    "name": "bogart-test",
-    "description": "Testing Bogart/FlatFile/Static structures",
-    "version": "0.1.0",
-    "author": "David Duggins",
-    "email": "David Duggins",
-    "main": "./app",
-    "directories": { "lib": "./lib" },
-    "dependencies": {
-      "node-static": "&gt;=0.6.5",
-      "bogart": "&gt;=0.2.0",
-      "mustache": "0.3.1-dev",
-      "http-proxy": "&gt;=0.0.0"
-    }
-}
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bogart-test&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Testing Bogart/FlatFile/Static structures&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;David Duggins&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;David Duggins&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;./app&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;directories&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;lib&quot;</span><span class="p">:</span> <span class="s2">&quot;./lib&quot;</span> <span class="p">},</span>
+</span><span class='line'>    <span class="nt">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nt">&quot;node-static&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0.6.5&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;bogart&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0.2.0&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;mustache&quot;</span><span class="p">:</span> <span class="s2">&quot;0.3.1-dev&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;http-proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0.0.0&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>The important stuff to note is node-static, bogart and node-static. I have not started to use mustache yet, but that may or may not be the templating engine.</p>
 
 <p>Bogart by itself is fairly straight-forward.  It&rsquo;s just as easy to configure as Sinatra is for Ruby or Silex for php.  It&rsquo;s just handles routes.</p>
 
-<p>var bogart = require(&lsquo;bogart&rsquo;);
-var router = bogart.router();</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">var</span> <span class="err">bogart</span> <span class="err">=</span> <span class="err">require(&#39;bogart&#39;);</span>
+</span><span class='line'><span class="err">var</span> <span class="err">router</span> <span class="err">=</span> <span class="err">bogart.router();</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">router.get(&#39;/&#39;,</span> <span class="err">function(req)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">return</span> <span class="err">bogart.html(</span><span class="nt">&quot;hello world&quot;</span><span class="err">);</span>
+</span><span class='line'><span class="p">}</span><span class="err">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">var</span> <span class="err">app</span> <span class="err">=</span> <span class="err">bogart.app();</span>
+</span><span class='line'><span class="err">app.use(bogart.batteries);</span> <span class="err">//</span> <span class="err">A</span> <span class="err">batteries</span> <span class="err">included</span> <span class="err">JSGI</span> <span class="err">stack</span> <span class="err">including</span> <span class="err">streaming</span> <span class="err">request</span> <span class="err">body</span> <span class="err">parsing,</span> <span class="err">session,</span> <span class="err">flash,</span> <span class="err">and</span> <span class="err">much</span> <span class="err">more.</span>
+</span><span class='line'><span class="err">app.use(router);</span> <span class="err">//</span> <span class="err">Our</span> <span class="err">router</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">app.start();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>router.get(&lsquo;/&rsquo;, function(req) {</p>
-
-<p>  return bogart.html(&ldquo;hello world&rdquo;);
-});</p>
-
-<p>var app = bogart.app();
-app.use(bogart.batteries); // A batteries included JSGI stack including streaming request body parsing, session, flash, and much more.
-app.use(router); // Our router</p>
-
-<p>app.start();</p>
 
 <p> The above example with simply echo &ldquo;Hello World&rdquo; on the index of our site.  It is set to use the default port 8080.  That cam be easily changed with     app.start(&lsquo;10000&rsquo;, &lsquo;127.0.0.1&rsquo;)</p>
 
 <p> The next part is node-static.  I want to be able to serve static files, like an about page.  Fairly simple as well:</p>
 
-<p>var static = require(&lsquo;node-static&rsquo;);</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">var</span> <span class="err">static</span> <span class="err">=</span> <span class="err">require(&#39;node-static&#39;);</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">//</span>
+</span><span class='line'><span class="err">//</span> <span class="err">Create</span> <span class="err">a</span> <span class="err">node-static</span> <span class="err">server</span> <span class="err">to</span> <span class="err">serve</span> <span class="err">the</span> <span class="err">current</span> <span class="err">directory</span>
+</span><span class='line'><span class="err">//</span>
+</span><span class='line'><span class="err">var</span> <span class="err">file</span> <span class="err">=</span> <span class="err">new(static.Server)(&#39;.&#39;,</span> <span class="p">{</span> <span class="err">cache:</span> <span class="err">7200,</span> <span class="err">headers:</span> <span class="err">{&#39;X-Hello&#39;:&#39;World!&#39;</span><span class="p">}</span> <span class="err">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">require(&#39;http&#39;).createServer(function</span> <span class="err">(request,</span> <span class="err">response)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="err">request.addListener(&#39;end&#39;,</span> <span class="err">function</span> <span class="err">()</span> <span class="err">{</span>
+</span><span class='line'>        <span class="err">//</span>
+</span><span class='line'>        <span class="err">//</span> <span class="err">Serve</span> <span class="err">files!</span>
+</span><span class='line'>        <span class="err">//</span>
+</span><span class='line'>        <span class="err">file.serve(request,</span> <span class="err">response,</span> <span class="err">function</span> <span class="err">(err,</span> <span class="err">res)</span> <span class="err">{</span>
+</span><span class='line'>            <span class="err">if</span> <span class="err">(err)</span> <span class="err">{</span> <span class="err">//</span> <span class="err">An</span> <span class="err">error</span> <span class="err">as</span> <span class="err">occured</span>
+</span><span class='line'>                <span class="err">console.error(</span><span class="nt">&quot;&gt; Error serving &quot;</span> <span class="err">+</span> <span class="err">request.url</span> <span class="err">+</span> <span class="s2">&quot; - &quot;</span> <span class="err">+</span> <span class="err">err.message);</span>
+</span><span class='line'>                <span class="err">response.writeHead(err.status</span><span class="p">,</span> <span class="err">err.headers);</span>
+</span><span class='line'>                <span class="err">response.end();</span>
+</span><span class='line'>            <span class="p">}</span> <span class="err">else</span> <span class="p">{</span> <span class="err">//</span> <span class="err">The</span> <span class="err">file</span> <span class="err">was</span> <span class="err">served</span> <span class="err">successfully</span>
+</span><span class='line'>                <span class="err">console.log(</span><span class="nt">&quot;&gt; &quot;</span> <span class="err">+</span> <span class="err">request.url</span> <span class="err">+</span> <span class="s2">&quot; - &quot;</span> <span class="err">+</span> <span class="err">res.message);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="err">});</span>
+</span><span class='line'>    <span class="err">});</span>
+</span><span class='line'><span class="err">}).listen(</span><span class="mi">1337</span><span class="err">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>//
-// Create a node-static server to serve the current directory
-//
-var file = new(static.Server)(&lsquo;.&rsquo;, { cache: 7200, headers: {&lsquo;X-Hello&rsquo;:&lsquo;World!&rsquo;} });</p>
-
-<p>require(&lsquo;http&rsquo;).createServer(function (request, response) {</p>
-
-<pre><code>request.addListener('end', function () {
-    //
-    // Serve files!
-    //
-    file.serve(request, response, function (err, res) {
-        if (err) { // An error as occured
-            console.error("&gt; Error serving " + request.url + " - " + err.message);
-            response.writeHead(err.status, err.headers);
-            response.end();
-        } else { // The file was served successfully
-            console.log("&gt; " + request.url + " - " + res.message);
-        }
-    });
-});
-</code></pre>
-
-<p>}).listen(1337);</p>
 
 <p>This code merely pulls any static files and servers them. It requires that you use naming conventions like index.html to make sure that a file is pulled up via &lsquo;/&rsquo;.  You also can call other pages just like you would on a normal apache server.
 The final part of this is configuring Bogart to use Http-proxy so that we can load the static pages only when we want to.
  To load http-proxy we need these two lines:</p>
 
-<p>var http = require(&lsquo;http&rsquo;)
-, httpProxy = require(&lsquo;http-proxy&rsquo;);</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">var</span> <span class="err">http</span> <span class="err">=</span> <span class="err">require(&#39;http&#39;)</span>
+</span><span class='line'><span class="err">,</span> <span class="err">httpProxy</span> <span class="err">=</span> <span class="err">require(&#39;http-proxy&#39;);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p> Then to use a proxy, we need this line:</p>
 
-<p>  router.get(&lsquo;/&rsquo;, function(req) {
-  return bogart.proxy(&lsquo;<a href="http://127.0.0.1:1337">http://127.0.0.1:1337</a>&rsquo;);
-});</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="err">router.get(&#39;/&#39;,</span> <span class="err">function(req)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="err">return</span> <span class="err">bogart.proxy(&#39;http://127.0.0.1:1337&#39;);</span>
+</span><span class='line'><span class="p">}</span><span class="err">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Remember that the static app is running on     1337.<br/>
+
+<p>Remember that the static app is running on port 1337.
  Well that is all for now.  I will be working on the other parts of this experiment and write more on it later.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">weatheredwatcher</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/24/running-multiple-apps-on-nodejs/" data-via="davidduggins" data-counturl="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/24/running-multiple-apps-on-nodejs/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/09/cloud9-ide/" title="Previous Post: Cloud9 IDE">&laquo; Cloud9 IDE</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/" title="Next Post: Preparing a Dev Environment with Puppet">Preparing a Dev Environment with Puppet &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section id="badges">
+      <a href="http://debian.org/"><img src="http://www.debian.org/logos/button-mini.png"></a>
+	    <a href="http://fedoraproject.org/"><img src="images/fedora_button.png" alt=""></a>
+	    <a href="http://www.catb.org/hacker-emblem/"><img src="http://www.weatheredwatcher.com/img/hacker.png" alt=""></a>
+	    <a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="http://www.weatheredwatcher.com/img/cc-license_80x15.png" alt=""></a>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+<a class="twitter-timeline"  href="https://twitter.com/DavidDuggins"  data-widget-id="469096456695980032">Tweets by @DavidDuggins</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+</section>
+<section>
+  <h2> Coding Playlist </h2>
+<iframe src="https://embed.spotify.com/?uri=spotify:user:weatheredwatcher:playlist:5xsZotbtCqUi9BdmXzPJhC" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+</section>
+<section id="fedora_badge">
+  <a href="http://fedoraproject.com/en_GB/get-fedora"><img alt="Fedora 20 Heisenbug is here!" src="http://fedoraproject.org/static/images/banners/f20release.png"></a>
+</section>
+<section id="conferencs">
+   <a href="http://www.northeastphp.org"><img src="http://www.northeastphp.org/boston_conference/img/logo.png" alt="I'm Speaking at NEPHP Conference, Boston" border="0"></a>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

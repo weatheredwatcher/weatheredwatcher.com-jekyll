@@ -1,4 +1,99 @@
-<p>Today I am going to impart some more command line goodness on you! (You&rsquo;re welcome!)\n Last time we talked about using the     like term to pull out similar tables.  Now we will use it in a query to pull out similar values from a field.
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using like to make better queries - weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="Today I am going to impart some more command line goodness on you! (You&rsquo;re welcome!)\n Last time we talked about using the like term to pull &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/11/14/using-like-to-make-better-queries/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span id="sub-title" class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Using Like to Make Better Queries</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Today I am going to impart some more command line goodness on you! (You&rsquo;re welcome!)\n Last time we talked about using the     like term to pull out similar tables.  Now we will use it in a query to pull out similar values from a field.
  So here is the scenario: Let&rsquo;s say we are dealing with the WordPress options table.  All of our options are prefix with &lsquo;special_offers&rsquo;.  So rather then create multiple queries to pull the data from each one, we will use the like operator.</p>
 
 <pre><code>select option_name, option_value from wp_options where option_name like 'special_offers%' \G
@@ -43,3 +138,196 @@ $data = my_get_options($args);
 <p>The array sets the options (except for default, as this is really only useful for single options and not a group of options..I only included it to allow this to act as a total replacement for get_options)
  The args are parsed by a series of tests.  If it&rsquo;s not an array, we assume that $args is just a string with a needle.  Then we make sure that the optional arguments exist and if not, place default values in their place.  Finally we run the query.  We check for a response, so if there is no such options, the default value can be used. Finally, we return an array with the options in a key=>value paired array!
 Even though we got a little bit WordPress specific at the end, this is some good solid db stuff that you can use whenever you have a lot of data.  Remember, the less calls you have to make to the database the faster and more efficient your code will run!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">weatheredwatcher</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T00:00:00-05:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/11/14/using-like-to-make-better-queries/" data-via="davidduggins" data-counturl="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/11/14/using-like-to-make-better-queries/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/10/30/two-pro-tricks-in-mysql/" title="Previous Post: Two pro tricks in MySQL">&laquo; Two pro tricks in MySQL</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/03/new-relic/" title="Next Post: New Relic">New Relic &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section id="badges">
+      <a href="http://debian.org/"><img src="http://www.debian.org/logos/button-mini.png"></a>
+	    <a href="http://fedoraproject.org/"><img src="images/fedora_button.png" alt=""></a>
+	    <a href="http://www.catb.org/hacker-emblem/"><img src="http://www.weatheredwatcher.com/img/hacker.png" alt=""></a>
+	    <a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="http://www.weatheredwatcher.com/img/cc-license_80x15.png" alt=""></a>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+<a class="twitter-timeline"  href="https://twitter.com/DavidDuggins"  data-widget-id="469096456695980032">Tweets by @DavidDuggins</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+</section>
+<section>
+  <h2> Coding Playlist </h2>
+<iframe src="https://embed.spotify.com/?uri=spotify:user:weatheredwatcher:playlist:5xsZotbtCqUi9BdmXzPJhC" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+</section>
+<section id="fedora_badge">
+  <a href="http://fedoraproject.com/en_GB/get-fedora"><img alt="Fedora 20 Heisenbug is here!" src="http://fedoraproject.org/static/images/banners/f20release.png"></a>
+</section>
+<section id="conferencs">
+   <a href="http://www.northeastphp.org"><img src="http://www.northeastphp.org/boston_conference/img/logo.png" alt="I'm Speaking at NEPHP Conference, Boston" border="0"></a>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

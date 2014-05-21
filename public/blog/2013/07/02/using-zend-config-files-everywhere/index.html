@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using Zend Style Config Files Everywhere - weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="It&rsquo;s been a while since my last blog entry, I know!! I feel bad, so here is a bit of php goodness to make us all feel better! It&rsquo;s always &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weatheredwatcher.github.io/weatheredwatcher" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span id="sub-title" class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Using Zend Style Config Files Everywhere</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-02T10:46:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>It&rsquo;s been a while since my last blog entry, I know!!  I feel bad, so here is a bit of php goodness to make us all feel better!</p>
+
+<p>It&rsquo;s always a good security practice to remove configuration from your web-app.  One way to do this is to use a configuration file.  Now, Zend has a very cool way of doing this,(<code>Zend\Config\Reader</code>) but the client that I am with right now is using a solution based on Codeigniter.  However, since they are planning on eventually moving to Zend anyway, I figured I would implement a solution based on the Zend config solution.</p>
+
+<p>First comes the file, which I called <code>environment.ini</code> and placed in <code>/etc</code>.</p>
+
+<p>The entries are in the following format:</p>
+
+<pre><code>cg.database.name=name
+cg.database.username=username
+cg.database.password=password
+cg.database.hostname=hostname
+cg.services.name=dev
+cg.services.port=8080
+</code></pre>
+
+<p>To utilize this for the database, for example, lets create a helper with the following function:</p>
+
+<pre><code>function get_environment(){
+$config = array();
+foreach( file( '/etc/sitename/environment.ini') as $line) {
+    list( $keys, $value) = explode( '=', $line);
+
+    $temp =&amp; $config;
+    foreach( explode( '.', $keys) as $key)
+    {           
+        $temp =&amp; $temp[$key];
+    }
+    $temp = trim( $value);
+
+}
+
+return $config;
+
+}
+</code></pre>
+
+<p>This will return an array like this:</p>
+
+<pre><code>array 
+  'cg' =&gt; 
+    array 
+     'database' =&gt; 
+        array 
+          'name' =&gt; string 'name'
+          'hostname' =&gt; string 'hostname'
+          'username' =&gt; string 'username'
+          'password' =&gt; string 'password' 
+      'services' =&gt; 
+        array (size=5)
+          'url' =&gt; string 'dev'
+          'port' =&gt; string '8080'
+</code></pre>
+
+<p>The next part of this is making use of the data in your application.  In the database config file for Codeigniter, for example:</p>
+
+<pre><code>$dbconfig = get_environment();
+
+$db = $dbconfig['cg'][database];
+
+$db['default']['hostname'] = $db['hostname'];
+$db['default']['username'] = $db['username'];
+$db['default']['password'] = $db['password'];
+$db['default']['database'] = $db['name'];
+</code></pre>
+
+<p>And there you have it!  Of course, I based this on CI but you should be able to use this code for any framework..or even no framework.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">weatheredwatcher</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-02T10:46:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/zend/'>zend</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/" data-via="davidduggins" data-counturl="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/" title="Previous Post: Preparing a Dev Environment with Puppet">&laquo; Preparing a Dev Environment with Puppet</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section id="badges">
+      <a href="http://debian.org/"><img src="http://www.debian.org/logos/button-mini.png"></a>
+	    <a href="http://fedoraproject.org/"><img src="images/fedora_button.png" alt=""></a>
+	    <a href="http://www.catb.org/hacker-emblem/"><img src="http://www.weatheredwatcher.com/img/hacker.png" alt=""></a>
+	    <a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="http://www.weatheredwatcher.com/img/cc-license_80x15.png" alt=""></a>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+<a class="twitter-timeline"  href="https://twitter.com/DavidDuggins"  data-widget-id="469096456695980032">Tweets by @DavidDuggins</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+</section>
+<section>
+  <h2> Coding Playlist </h2>
+<iframe src="https://embed.spotify.com/?uri=spotify:user:weatheredwatcher:playlist:5xsZotbtCqUi9BdmXzPJhC" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+</section>
+<section id="fedora_badge">
+  <a href="http://fedoraproject.com/en_GB/get-fedora"><img alt="Fedora 20 Heisenbug is here!" src="http://fedoraproject.org/static/images/banners/f20release.png"></a>
+</section>
+<section id="conferencs">
+   <a href="http://www.northeastphp.org"><img src="http://www.northeastphp.org/boston_conference/img/logo.png" alt="I'm Speaking at NEPHP Conference, Boston" border="0"></a>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/';
+        var disqus_url = 'http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

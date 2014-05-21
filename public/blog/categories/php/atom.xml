@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: php | weatheredwatcher]]></title>
+  <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/categories/php/atom.xml" rel="self"/>
+  <link href="http://weatheredwatcher.github.io/weatheredwatcher/"/>
+  <updated>2014-05-21T08:46:21-04:00</updated>
+  <id>http://weatheredwatcher.github.io/weatheredwatcher/</id>
+  <author>
+    <name><![CDATA[weatheredwatcher]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using Zend Style Config Files Everywhere]]></title>
+    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/"/>
+    <updated>2013-07-02T10:46:00-04:00</updated>
+    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last blog entry, I know!!  I feel bad, so here is a bit of php goodness to make us all feel better!</p>
+
+<p>It&rsquo;s always a good security practice to remove configuration from your web-app.  One way to do this is to use a configuration file.  Now, Zend has a very cool way of doing this,(<code>Zend\Config\Reader</code>) but the client that I am with right now is using a solution based on Codeigniter.  However, since they are planning on eventually moving to Zend anyway, I figured I would implement a solution based on the Zend config solution.</p>
+
+<p>First comes the file, which I called <code>environment.ini</code> and placed in <code>/etc</code>.</p>
+
+<p>The entries are in the following format:</p>
+
+<pre><code>cg.database.name=name
+cg.database.username=username
+cg.database.password=password
+cg.database.hostname=hostname
+cg.services.name=dev
+cg.services.port=8080
+</code></pre>
+
+<p>To utilize this for the database, for example, lets create a helper with the following function:</p>
+
+<pre><code>function get_environment(){
+$config = array();
+foreach( file( '/etc/sitename/environment.ini') as $line) {
+    list( $keys, $value) = explode( '=', $line);
+
+    $temp =&amp; $config;
+    foreach( explode( '.', $keys) as $key)
+    {           
+        $temp =&amp; $temp[$key];
+    }
+    $temp = trim( $value);
+
+}
+
+return $config;
+
+}
+</code></pre>
+
+<p>This will return an array like this:</p>
+
+<pre><code>array 
+  'cg' =&gt; 
+    array 
+     'database' =&gt; 
+        array 
+          'name' =&gt; string 'name'
+          'hostname' =&gt; string 'hostname'
+          'username' =&gt; string 'username'
+          'password' =&gt; string 'password' 
+      'services' =&gt; 
+        array (size=5)
+          'url' =&gt; string 'dev'
+          'port' =&gt; string '8080'
+</code></pre>
+
+<p>The next part of this is making use of the data in your application.  In the database config file for Codeigniter, for example:</p>
+
+<pre><code>$dbconfig = get_environment();
+
+$db = $dbconfig['cg'][database];
+
+$db['default']['hostname'] = $db['hostname'];
+$db['default']['username'] = $db['username'];
+$db['default']['password'] = $db['password'];
+$db['default']['database'] = $db['name'];
+</code></pre>
+
+<p>And there you have it!  Of course, I based this on CI but you should be able to use this code for any framework..or even no framework.</p>
+]]></content>
+  </entry>
+  
+</feed>

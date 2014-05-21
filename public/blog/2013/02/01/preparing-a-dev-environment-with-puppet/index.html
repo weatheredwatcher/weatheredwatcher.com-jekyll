@@ -53,7 +53,7 @@ Today we are going to talk about Puppet. No, not Pinochio, or &hellip;">
             weatheredwatcher
         </span>
        
-           <span class="blue_dark">
+           <span id="sub-title" class="blue_dark">
              ...creating chaos since 1981
            </span>
        
@@ -101,178 +101,288 @@ Today we are going to talk about Puppet.  No, not Pinochio, or those Punch and J
 
 <p>The general requirements are simple:</p>
 
-<p> 1 We must run Zend Server
- 2 We must load the php drivers MS Sql
- 3 We must install subversion</p>
+<ol>
+<li>We must run Zend Server</li>
+<li>We must load the php drivers MS Sql</li>
+<li>We must install subversion</li>
+</ol>
+
 
 <p>With these requirements in mind, I set out to build my first puppet script.</p>
 
 <p>The first class that we define is our services class.  I need to make sure that Apache is running.  Also, I found out that Cent Os turns iptables on by default.  That interferes with the dev box, as well as being unnecessary!  So we make sure that iptables is off.</p>
 
-<pre><code>class services {
-  #we want apache
-  service { 
-    'httpd':
-      ensure =&gt; running,
-      enable =&gt; true
-  }
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class services {
+</span><span class='line'>  #we want apache
+</span><span class='line'>  service {
+</span><span class='line'>    'httpd':
+</span><span class='line'>      ensure =&gt; running,
+</span><span class='line'>      enable =&gt; true
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>service {
+</span><span class='line'>  'iptables':
+</span><span class='line'>    ensure =&gt; stopped,
+</span><span class='line'>    enable =&gt; false
+</span><span class='line'> }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
-  service {
-    'iptables':
-      ensure =&gt; stopped,
-      enable =&gt; false
-  }
-}
-</code></pre>
 
 <p>The next two classes work in tandem.  The repos class defines our Zend Server repo and packages install the required packages.</p>
 
-<pre><code>class packages {
-  package {
-    "httpd":                      ensure =&gt; "present"; # Apache
-    "subversion":                 ensure =&gt; "present"; # Subversion
-    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
-    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
-  }
-}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class packages {
+</span><span class='line'>  package {
+</span><span class='line'>    "httpd":                      ensure =&gt; "present"; # Apache
+</span><span class='line'>    "subversion":                 ensure =&gt; "present"; # Subversion
+</span><span class='line'>    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+</span><span class='line'>    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class repos {
+</span><span class='line'>  #lets install some repos
+</span><span class='line'>  file { "/etc/yum.repos.d/zend.repo":
+</span><span class='line'>    content =&gt; "[Zend]
+</span><span class='line'>    name=Zend Server
+</span><span class='line'>    baseurl=http://repos.zend.com/zend-server/rpm/x86_64
+</span><span class='line'>    enabled=1
+</span><span class='line'>    gpgcheck=1
+</span><span class='line'>    gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>
+</span><span class='line'>    [Zend_noarch]
+</span><span class='line'>    name=Zend Server - noarch
+</span><span class='line'>    baseurl=http://repos.zend.com/zend-server/rpm/noarch
+</span><span class='line'>    enabled=1
+</span><span class='line'>    gpgcheck=1
+</span><span class='line'>    gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>    "
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
-
-class repos {
-  #lets install some repos
-  file { "/etc/yum.repos.d/zend.repo":
-    content =&gt; "[Zend]
-name=Zend Server
-baseurl=http://repos.zend.com/zend-server/rpm/x86_64
-enabled=1
-gpgcheck=1
-gpgkey=http://repos.zend.com/zend.key
-
-[Zend_noarch]
-name=Zend Server - noarch
-baseurl=http://repos.zend.com/zend-server/rpm/noarch
-enabled=1
-gpgcheck=1
-gpgkey=http://repos.zend.com/zend.key
-    "
-  }
-
-}
-</code></pre>
 
 <p>If anyone wants to see the entire file, here it is:</p>
 
-<p>stage {</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>stage {
+</span><span class='line'>
+</span><span class='line'>  'users':      before =&gt; Stage['repos'];
+</span><span class='line'>  'repos':      before =&gt; Stage['packages'];
+</span><span class='line'>  'packages':   before =&gt; Stage['configure'];
+</span><span class='line'>  'configure':  before =&gt; Stage['services'];
+</span><span class='line'>  'services':   before =&gt; Stage['main'];
+</span><span class='line'>
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class services {
+</span><span class='line'>  #we want apache
+</span><span class='line'>  service {
+</span><span class='line'>    'httpd':
+</span><span class='line'>      ensure =&gt; running,
+</span><span class='line'>      enable =&gt; true
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  service {
+</span><span class='line'>    'iptables':
+</span><span class='line'>      ensure =&gt; stopped,
+</span><span class='line'>      enable =&gt; false
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class configure {
+</span><span class='line'>
+</span><span class='line'>  # symlinking the code from /home/vagrant/public to var/www/public
+</span><span class='line'>  exec { "public simlink":
+</span><span class='line'>    command =&gt; "/bin/ln -s /home/vagrant/public /var/www/",
+</span><span class='line'>    unless  =&gt; "/usr/bin/test -L /var/www/",
+</span><span class='line'>  }
+</span><span class='line'>  file {"/var/www/index.html":
+</span><span class='line'>    ensure =&gt; "absent"
+</span><span class='line'>
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class packages {
+</span><span class='line'>  package {
+</span><span class='line'>    "httpd":                      ensure =&gt; "present"; # Apache
+</span><span class='line'>    "subversion":                 ensure =&gt; "present"; # Subversion
+</span><span class='line'>    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+</span><span class='line'>    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class repos {
+</span><span class='line'>
+</span><span class='line'>  file { "/etc/yum.repos.d/zend.repo":
+</span><span class='line'>    content =&gt; "[Zend]
+</span><span class='line'>name=Zend Server
+</span><span class='line'>baseurl=http://repos.zend.com/zend-server/rpm/x86_64
+</span><span class='line'>enabled=1
+</span><span class='line'>gpgcheck=1
+</span><span class='line'>gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>
+</span><span class='line'>[Zend_noarch]
+</span><span class='line'>name=Zend Server - noarch
+</span><span class='line'>baseurl=http://repos.zend.com/zend-server/rpm/noarch
+</span><span class='line'>enabled=1
+</span><span class='line'>gpgcheck=1
+</span><span class='line'>gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>    "
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class users
+</span><span class='line'>{
+</span><span class='line'>  group { "puppet":
+</span><span class='line'>    ensure =&gt; "present",
+</span><span class='line'>  }
+</span><span class='line'>  user { "vagrant":
+</span><span class='line'>    ensure =&gt; "present",
+</span><span class='line'>
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class {
+</span><span class='line'>  users:      stage =&gt; "users";
+</span><span class='line'>  repos:      stage =&gt; "repos";
+</span><span class='line'>  packages:   stage =&gt; "packages";
+</span><span class='line'>  configure:  stage =&gt; "configure";
+</span><span class='line'>  services:   stage =&gt; "services";
+</span><span class='line'>
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
 
-<p>  &lsquo;users&rsquo;:      before => Stage[&lsquo;repos&rsquo;];
-  &lsquo;repos&rsquo;:      before => Stage[&lsquo;packages&rsquo;];
-  &lsquo;packages&rsquo;:   before => Stage[&lsquo;configure&rsquo;];
-  &lsquo;configure&rsquo;:  before => Stage[&lsquo;services&rsquo;];
-  &lsquo;services&rsquo;:   before => Stage[&lsquo;main&rsquo;];</p>
-
-<p>}</p>
-
-<p>class services {
-  #we want apache
-  service {</p>
-
-<pre><code>'httpd':
-  ensure =&gt; running,
-  enable =&gt; true
-</code></pre>
-
-<p>  }</p>
-
-<p>  service {</p>
-
-<pre><code>'iptables':
-  ensure =&gt; stopped,
-  enable =&gt; false
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class configure {</p>
-
-<p>  # symlinking the code from /home/vagrant/public to var/www/public
-  exec { &ldquo;public simlink&rdquo;:</p>
-
-<pre><code>command =&gt; "/bin/ln -s /home/vagrant/public /var/www/",
-unless  =&gt; "/usr/bin/test -L /var/www/",
-</code></pre>
-
-<p>  }
-  file {&ldquo;/var/www/index.html&rdquo;:</p>
-
-<pre><code>ensure =&gt; "absent"
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class packages {
-  package {</p>
-
-<pre><code>"httpd":                      ensure =&gt; "present"; # Apache
-"subversion":                 ensure =&gt; "present"; # Subversion
-"zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
-"php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class repos {</p>
-
-<p>  file { &ldquo;/etc/yum.repos.d/zend.repo&rdquo;:</p>
-
-<pre><code>content =&gt; "[Zend]
-</code></pre>
-
-<p>name=Zend Server
-baseurl=<a href="http://repos.zend.com/zend-server/rpm/x86_64">http://repos.zend.com/zend-server/rpm/x86_64</a>
-enabled=1
-gpgcheck=1
-gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
-
-<p>[Zend_noarch]
-name=Zend Server &ndash; noarch
-baseurl=<a href="http://repos.zend.com/zend-server/rpm/noarch">http://repos.zend.com/zend-server/rpm/noarch</a>
-enabled=1
-gpgcheck=1
-gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
-
-<pre><code>"
-</code></pre>
-
-<p>  }</p>
-
-<p>}</p>
-
-<p>class users
-{
-  group { &ldquo;puppet&rdquo;:</p>
-
-<pre><code>ensure =&gt; "present",
-</code></pre>
-
-<p>  }
-  user { &ldquo;vagrant&rdquo;:</p>
-
-<pre><code>ensure =&gt; "present",
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class {
-  users:      stage => &ldquo;users&rdquo;;
-  repos:      stage => &ldquo;repos&rdquo;;
-  packages:   stage => &ldquo;packages&rdquo;;
-  configure:  stage => &ldquo;configure&rdquo;;
-  services:   stage => &ldquo;services&rdquo;;</p>
-
-<p>}</p>
 </div>
 
 
@@ -315,7 +425,7 @@ gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</
         <a class="basic-alignment left" href="/blog/2013/01/24/running-multiple-apps-on-nodejs/" title="Previous Post: Running Multiple Apps On NodeJs">&laquo; Running Multiple Apps On NodeJs</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013/09/28/a-new-post/" title="Next Post: a new post">a new post &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2013/07/02/using-zend-config-files-everywhere/" title="Next Post: Using Zend Style Config Files Everywhere">Using Zend Style Config Files Everywhere &raquo;</a>
       
     </p>
   </footer>
@@ -335,12 +445,18 @@ gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</
   <h1>About Me</h1>
   <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
 </section>
+<section id="badges">
+      <a href="http://debian.org/"><img src="http://www.debian.org/logos/button-mini.png"></a>
+	    <a href="http://fedoraproject.org/"><img src="images/fedora_button.png" alt=""></a>
+	    <a href="http://www.catb.org/hacker-emblem/"><img src="http://www.weatheredwatcher.com/img/hacker.png" alt=""></a>
+	    <a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="http://www.weatheredwatcher.com/img/cc-license_80x15.png" alt=""></a>
+</section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/09/28/a-new-post/">a new post</a>
+        <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
       <li class="post">
@@ -393,11 +509,21 @@ gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</
 
 <section>
   <h1>Latest Tweets</h1>
-  <ul id="tweets">
+<a class="twitter-timeline"  href="https://twitter.com/DavidDuggins"  data-widget-id="469096456695980032">Tweets by @DavidDuggins</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-</ul>
-  </section>
 
+</section>
+<section>
+  <h2> Coding Playlist </h2>
+<iframe src="https://embed.spotify.com/?uri=spotify:user:weatheredwatcher:playlist:5xsZotbtCqUi9BdmXzPJhC" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+</section>
+<section id="fedora_badge">
+  <a href="http://fedoraproject.com/en_GB/get-fedora"><img alt="Fedora 20 Heisenbug is here!" src="http://fedoraproject.org/static/images/banners/f20release.png"></a>
+</section>
+<section id="conferencs">
+   <a href="http://www.northeastphp.org"><img src="http://www.northeastphp.org/boston_conference/img/logo.png" alt="I'm Speaking at NEPHP Conference, Boston" border="0"></a>
+</section>
 
 
 

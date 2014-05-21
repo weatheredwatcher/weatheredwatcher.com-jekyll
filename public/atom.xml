@@ -4,7 +4,7 @@
   <title><![CDATA[weatheredwatcher]]></title>
   <link href="http://weatheredwatcher.github.io/weatheredwatcher/atom.xml" rel="self"/>
   <link href="http://weatheredwatcher.github.io/weatheredwatcher/"/>
-  <updated>2014-03-21T22:41:29-04:00</updated>
+  <updated>2014-05-21T08:46:21-04:00</updated>
   <id>http://weatheredwatcher.github.io/weatheredwatcher/</id>
   <author>
     <name><![CDATA[weatheredwatcher]]></name>
@@ -14,11 +14,77 @@
 
   
   <entry>
-    <title type="html"><![CDATA[a new post]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/09/28/a-new-post/"/>
-    <updated>2013-09-28T10:46:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/09/28/a-new-post</id>
-    <content type="html"><![CDATA[
+    <title type="html"><![CDATA[Using Zend Style Config Files Everywhere]]></title>
+    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/"/>
+    <updated>2013-07-02T10:46:00-04:00</updated>
+    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last blog entry, I know!!  I feel bad, so here is a bit of php goodness to make us all feel better!</p>
+
+<p>It&rsquo;s always a good security practice to remove configuration from your web-app.  One way to do this is to use a configuration file.  Now, Zend has a very cool way of doing this,(<code>Zend\Config\Reader</code>) but the client that I am with right now is using a solution based on Codeigniter.  However, since they are planning on eventually moving to Zend anyway, I figured I would implement a solution based on the Zend config solution.</p>
+
+<p>First comes the file, which I called <code>environment.ini</code> and placed in <code>/etc</code>.</p>
+
+<p>The entries are in the following format:</p>
+
+<pre><code>cg.database.name=name
+cg.database.username=username
+cg.database.password=password
+cg.database.hostname=hostname
+cg.services.name=dev
+cg.services.port=8080
+</code></pre>
+
+<p>To utilize this for the database, for example, lets create a helper with the following function:</p>
+
+<pre><code>function get_environment(){
+$config = array();
+foreach( file( '/etc/sitename/environment.ini') as $line) {
+    list( $keys, $value) = explode( '=', $line);
+
+    $temp =&amp; $config;
+    foreach( explode( '.', $keys) as $key)
+    {           
+        $temp =&amp; $temp[$key];
+    }
+    $temp = trim( $value);
+
+}
+
+return $config;
+
+}
+</code></pre>
+
+<p>This will return an array like this:</p>
+
+<pre><code>array 
+  'cg' =&gt; 
+    array 
+     'database' =&gt; 
+        array 
+          'name' =&gt; string 'name'
+          'hostname' =&gt; string 'hostname'
+          'username' =&gt; string 'username'
+          'password' =&gt; string 'password' 
+      'services' =&gt; 
+        array (size=5)
+          'url' =&gt; string 'dev'
+          'port' =&gt; string '8080'
+</code></pre>
+
+<p>The next part of this is making use of the data in your application.  In the database config file for Codeigniter, for example:</p>
+
+<pre><code>$dbconfig = get_environment();
+
+$db = $dbconfig['cg'][database];
+
+$db['default']['hostname'] = $db['hostname'];
+$db['default']['username'] = $db['username'];
+$db['default']['password'] = $db['password'];
+$db['default']['database'] = $db['name'];
+</code></pre>
+
+<p>And there you have it!  Of course, I based this on CI but you should be able to use this code for any framework..or even no framework.</p>
 ]]></content>
   </entry>
   
@@ -34,178 +100,288 @@ Today we are going to talk about Puppet.  No, not Pinochio, or those Punch and J
 
 <p>The general requirements are simple:</p>
 
-<p> 1 We must run Zend Server
- 2 We must load the php drivers MS Sql
- 3 We must install subversion</p>
+<ol>
+<li>We must run Zend Server</li>
+<li>We must load the php drivers MS Sql</li>
+<li>We must install subversion</li>
+</ol>
+
 
 <p>With these requirements in mind, I set out to build my first puppet script.</p>
 
 <p>The first class that we define is our services class.  I need to make sure that Apache is running.  Also, I found out that Cent Os turns iptables on by default.  That interferes with the dev box, as well as being unnecessary!  So we make sure that iptables is off.</p>
 
-<pre><code>class services {
-  #we want apache
-  service { 
-    'httpd':
-      ensure =&gt; running,
-      enable =&gt; true
-  }
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class services {
+</span><span class='line'>  #we want apache
+</span><span class='line'>  service {
+</span><span class='line'>    'httpd':
+</span><span class='line'>      ensure =&gt; running,
+</span><span class='line'>      enable =&gt; true
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>service {
+</span><span class='line'>  'iptables':
+</span><span class='line'>    ensure =&gt; stopped,
+</span><span class='line'>    enable =&gt; false
+</span><span class='line'> }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
-  service {
-    'iptables':
-      ensure =&gt; stopped,
-      enable =&gt; false
-  }
-}
-</code></pre>
 
 <p>The next two classes work in tandem.  The repos class defines our Zend Server repo and packages install the required packages.</p>
 
-<pre><code>class packages {
-  package {
-    "httpd":                      ensure =&gt; "present"; # Apache
-    "subversion":                 ensure =&gt; "present"; # Subversion
-    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
-    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
-  }
-}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class packages {
+</span><span class='line'>  package {
+</span><span class='line'>    "httpd":                      ensure =&gt; "present"; # Apache
+</span><span class='line'>    "subversion":                 ensure =&gt; "present"; # Subversion
+</span><span class='line'>    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+</span><span class='line'>    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class repos {
+</span><span class='line'>  #lets install some repos
+</span><span class='line'>  file { "/etc/yum.repos.d/zend.repo":
+</span><span class='line'>    content =&gt; "[Zend]
+</span><span class='line'>    name=Zend Server
+</span><span class='line'>    baseurl=http://repos.zend.com/zend-server/rpm/x86_64
+</span><span class='line'>    enabled=1
+</span><span class='line'>    gpgcheck=1
+</span><span class='line'>    gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>
+</span><span class='line'>    [Zend_noarch]
+</span><span class='line'>    name=Zend Server - noarch
+</span><span class='line'>    baseurl=http://repos.zend.com/zend-server/rpm/noarch
+</span><span class='line'>    enabled=1
+</span><span class='line'>    gpgcheck=1
+</span><span class='line'>    gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>    "
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
-
-class repos {
-  #lets install some repos
-  file { "/etc/yum.repos.d/zend.repo":
-    content =&gt; "[Zend]
-name=Zend Server
-baseurl=http://repos.zend.com/zend-server/rpm/x86_64
-enabled=1
-gpgcheck=1
-gpgkey=http://repos.zend.com/zend.key
-
-[Zend_noarch]
-name=Zend Server - noarch
-baseurl=http://repos.zend.com/zend-server/rpm/noarch
-enabled=1
-gpgcheck=1
-gpgkey=http://repos.zend.com/zend.key
-    "
-  }
-
-}
-</code></pre>
 
 <p>If anyone wants to see the entire file, here it is:</p>
 
-<p>stage {</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>stage {
+</span><span class='line'>
+</span><span class='line'>  'users':      before =&gt; Stage['repos'];
+</span><span class='line'>  'repos':      before =&gt; Stage['packages'];
+</span><span class='line'>  'packages':   before =&gt; Stage['configure'];
+</span><span class='line'>  'configure':  before =&gt; Stage['services'];
+</span><span class='line'>  'services':   before =&gt; Stage['main'];
+</span><span class='line'>
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class services {
+</span><span class='line'>  #we want apache
+</span><span class='line'>  service {
+</span><span class='line'>    'httpd':
+</span><span class='line'>      ensure =&gt; running,
+</span><span class='line'>      enable =&gt; true
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  service {
+</span><span class='line'>    'iptables':
+</span><span class='line'>      ensure =&gt; stopped,
+</span><span class='line'>      enable =&gt; false
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class configure {
+</span><span class='line'>
+</span><span class='line'>  # symlinking the code from /home/vagrant/public to var/www/public
+</span><span class='line'>  exec { "public simlink":
+</span><span class='line'>    command =&gt; "/bin/ln -s /home/vagrant/public /var/www/",
+</span><span class='line'>    unless  =&gt; "/usr/bin/test -L /var/www/",
+</span><span class='line'>  }
+</span><span class='line'>  file {"/var/www/index.html":
+</span><span class='line'>    ensure =&gt; "absent"
+</span><span class='line'>
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class packages {
+</span><span class='line'>  package {
+</span><span class='line'>    "httpd":                      ensure =&gt; "present"; # Apache
+</span><span class='line'>    "subversion":                 ensure =&gt; "present"; # Subversion
+</span><span class='line'>    "zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
+</span><span class='line'>    "php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class repos {
+</span><span class='line'>
+</span><span class='line'>  file { "/etc/yum.repos.d/zend.repo":
+</span><span class='line'>    content =&gt; "[Zend]
+</span><span class='line'>name=Zend Server
+</span><span class='line'>baseurl=http://repos.zend.com/zend-server/rpm/x86_64
+</span><span class='line'>enabled=1
+</span><span class='line'>gpgcheck=1
+</span><span class='line'>gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>
+</span><span class='line'>[Zend_noarch]
+</span><span class='line'>name=Zend Server - noarch
+</span><span class='line'>baseurl=http://repos.zend.com/zend-server/rpm/noarch
+</span><span class='line'>enabled=1
+</span><span class='line'>gpgcheck=1
+</span><span class='line'>gpgkey=http://repos.zend.com/zend.key
+</span><span class='line'>    "
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class users
+</span><span class='line'>{
+</span><span class='line'>  group { "puppet":
+</span><span class='line'>    ensure =&gt; "present",
+</span><span class='line'>  }
+</span><span class='line'>  user { "vagrant":
+</span><span class='line'>    ensure =&gt; "present",
+</span><span class='line'>
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class {
+</span><span class='line'>  users:      stage =&gt; "users";
+</span><span class='line'>  repos:      stage =&gt; "repos";
+</span><span class='line'>  packages:   stage =&gt; "packages";
+</span><span class='line'>  configure:  stage =&gt; "configure";
+</span><span class='line'>  services:   stage =&gt; "services";
+</span><span class='line'>
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
 
-<p>  &lsquo;users&rsquo;:      before => Stage[&lsquo;repos&rsquo;];
-  &lsquo;repos&rsquo;:      before => Stage[&lsquo;packages&rsquo;];
-  &lsquo;packages&rsquo;:   before => Stage[&lsquo;configure&rsquo;];
-  &lsquo;configure&rsquo;:  before => Stage[&lsquo;services&rsquo;];
-  &lsquo;services&rsquo;:   before => Stage[&lsquo;main&rsquo;];</p>
-
-<p>}</p>
-
-<p>class services {
-  #we want apache
-  service {</p>
-
-<pre><code>'httpd':
-  ensure =&gt; running,
-  enable =&gt; true
-</code></pre>
-
-<p>  }</p>
-
-<p>  service {</p>
-
-<pre><code>'iptables':
-  ensure =&gt; stopped,
-  enable =&gt; false
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class configure {</p>
-
-<p>  # symlinking the code from /home/vagrant/public to var/www/public
-  exec { &ldquo;public simlink&rdquo;:</p>
-
-<pre><code>command =&gt; "/bin/ln -s /home/vagrant/public /var/www/",
-unless  =&gt; "/usr/bin/test -L /var/www/",
-</code></pre>
-
-<p>  }
-  file {&ldquo;/var/www/index.html&rdquo;:</p>
-
-<pre><code>ensure =&gt; "absent"
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class packages {
-  package {</p>
-
-<pre><code>"httpd":                      ensure =&gt; "present"; # Apache
-"subversion":                 ensure =&gt; "present"; # Subversion
-"zend-server-ce-php-5.3":     ensure =&gt; "present"; # Zend Server (CE)
-"php-5.3-mssql-zend-server":  ensure =&gt; "present"; # MSSQL Extenstion - provided by Zend
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class repos {</p>
-
-<p>  file { &ldquo;/etc/yum.repos.d/zend.repo&rdquo;:</p>
-
-<pre><code>content =&gt; "[Zend]
-</code></pre>
-
-<p>name=Zend Server
-baseurl=<a href="http://repos.zend.com/zend-server/rpm/x86_64">http://repos.zend.com/zend-server/rpm/x86_64</a>
-enabled=1
-gpgcheck=1
-gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
-
-<p>[Zend_noarch]
-name=Zend Server &ndash; noarch
-baseurl=<a href="http://repos.zend.com/zend-server/rpm/noarch">http://repos.zend.com/zend-server/rpm/noarch</a>
-enabled=1
-gpgcheck=1
-gpgkey=<a href="http://repos.zend.com/zend.key">http://repos.zend.com/zend.key</a></p>
-
-<pre><code>"
-</code></pre>
-
-<p>  }</p>
-
-<p>}</p>
-
-<p>class users
-{
-  group { &ldquo;puppet&rdquo;:</p>
-
-<pre><code>ensure =&gt; "present",
-</code></pre>
-
-<p>  }
-  user { &ldquo;vagrant&rdquo;:</p>
-
-<pre><code>ensure =&gt; "present",
-</code></pre>
-
-<p>  }
-}</p>
-
-<p>class {
-  users:      stage => &ldquo;users&rdquo;;
-  repos:      stage => &ldquo;repos&rdquo;;
-  packages:   stage => &ldquo;packages&rdquo;;
-  configure:  stage => &ldquo;configure&rdquo;;
-  services:   stage => &ldquo;services&rdquo;;</p>
-
-<p>}</p>
 ]]></content>
   </entry>
   
@@ -219,86 +395,148 @@ With a little bit of trial and error, I have come up with the best solution to t
 
 <p>The first thing to look at will be my packages.json file.</p>
 
-<pre><code>{
-    "name": "bogart-test",
-    "description": "Testing Bogart/FlatFile/Static structures",
-    "version": "0.1.0",
-    "author": "David Duggins",
-    "email": "David Duggins",
-    "main": "./app",
-    "directories": { "lib": "./lib" },
-    "dependencies": {
-      "node-static": "&gt;=0.6.5",
-      "bogart": "&gt;=0.2.0",
-      "mustache": "0.3.1-dev",
-      "http-proxy": "&gt;=0.0.0"
-    }
-}
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bogart-test&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Testing Bogart/FlatFile/Static structures&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;David Duggins&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;David Duggins&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;./app&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;directories&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;lib&quot;</span><span class="p">:</span> <span class="s2">&quot;./lib&quot;</span> <span class="p">},</span>
+</span><span class='line'>    <span class="nt">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nt">&quot;node-static&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0.6.5&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;bogart&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0.2.0&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;mustache&quot;</span><span class="p">:</span> <span class="s2">&quot;0.3.1-dev&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;http-proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=0.0.0&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>The important stuff to note is node-static, bogart and node-static. I have not started to use mustache yet, but that may or may not be the templating engine.</p>
 
 <p>Bogart by itself is fairly straight-forward.  It&rsquo;s just as easy to configure as Sinatra is for Ruby or Silex for php.  It&rsquo;s just handles routes.</p>
 
-<p>var bogart = require(&lsquo;bogart&rsquo;);
-var router = bogart.router();</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">var</span> <span class="err">bogart</span> <span class="err">=</span> <span class="err">require(&#39;bogart&#39;);</span>
+</span><span class='line'><span class="err">var</span> <span class="err">router</span> <span class="err">=</span> <span class="err">bogart.router();</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">router.get(&#39;/&#39;,</span> <span class="err">function(req)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">return</span> <span class="err">bogart.html(</span><span class="nt">&quot;hello world&quot;</span><span class="err">);</span>
+</span><span class='line'><span class="p">}</span><span class="err">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">var</span> <span class="err">app</span> <span class="err">=</span> <span class="err">bogart.app();</span>
+</span><span class='line'><span class="err">app.use(bogart.batteries);</span> <span class="err">//</span> <span class="err">A</span> <span class="err">batteries</span> <span class="err">included</span> <span class="err">JSGI</span> <span class="err">stack</span> <span class="err">including</span> <span class="err">streaming</span> <span class="err">request</span> <span class="err">body</span> <span class="err">parsing,</span> <span class="err">session,</span> <span class="err">flash,</span> <span class="err">and</span> <span class="err">much</span> <span class="err">more.</span>
+</span><span class='line'><span class="err">app.use(router);</span> <span class="err">//</span> <span class="err">Our</span> <span class="err">router</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">app.start();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>router.get(&lsquo;/&rsquo;, function(req) {</p>
-
-<p>  return bogart.html(&ldquo;hello world&rdquo;);
-});</p>
-
-<p>var app = bogart.app();
-app.use(bogart.batteries); // A batteries included JSGI stack including streaming request body parsing, session, flash, and much more.
-app.use(router); // Our router</p>
-
-<p>app.start();</p>
 
 <p> The above example with simply echo &ldquo;Hello World&rdquo; on the index of our site.  It is set to use the default port 8080.  That cam be easily changed with     app.start(&lsquo;10000&rsquo;, &lsquo;127.0.0.1&rsquo;)</p>
 
 <p> The next part is node-static.  I want to be able to serve static files, like an about page.  Fairly simple as well:</p>
 
-<p>var static = require(&lsquo;node-static&rsquo;);</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">var</span> <span class="err">static</span> <span class="err">=</span> <span class="err">require(&#39;node-static&#39;);</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">//</span>
+</span><span class='line'><span class="err">//</span> <span class="err">Create</span> <span class="err">a</span> <span class="err">node-static</span> <span class="err">server</span> <span class="err">to</span> <span class="err">serve</span> <span class="err">the</span> <span class="err">current</span> <span class="err">directory</span>
+</span><span class='line'><span class="err">//</span>
+</span><span class='line'><span class="err">var</span> <span class="err">file</span> <span class="err">=</span> <span class="err">new(static.Server)(&#39;.&#39;,</span> <span class="p">{</span> <span class="err">cache:</span> <span class="err">7200,</span> <span class="err">headers:</span> <span class="err">{&#39;X-Hello&#39;:&#39;World!&#39;</span><span class="p">}</span> <span class="err">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">require(&#39;http&#39;).createServer(function</span> <span class="err">(request,</span> <span class="err">response)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="err">request.addListener(&#39;end&#39;,</span> <span class="err">function</span> <span class="err">()</span> <span class="err">{</span>
+</span><span class='line'>        <span class="err">//</span>
+</span><span class='line'>        <span class="err">//</span> <span class="err">Serve</span> <span class="err">files!</span>
+</span><span class='line'>        <span class="err">//</span>
+</span><span class='line'>        <span class="err">file.serve(request,</span> <span class="err">response,</span> <span class="err">function</span> <span class="err">(err,</span> <span class="err">res)</span> <span class="err">{</span>
+</span><span class='line'>            <span class="err">if</span> <span class="err">(err)</span> <span class="err">{</span> <span class="err">//</span> <span class="err">An</span> <span class="err">error</span> <span class="err">as</span> <span class="err">occured</span>
+</span><span class='line'>                <span class="err">console.error(</span><span class="nt">&quot;&gt; Error serving &quot;</span> <span class="err">+</span> <span class="err">request.url</span> <span class="err">+</span> <span class="s2">&quot; - &quot;</span> <span class="err">+</span> <span class="err">err.message);</span>
+</span><span class='line'>                <span class="err">response.writeHead(err.status</span><span class="p">,</span> <span class="err">err.headers);</span>
+</span><span class='line'>                <span class="err">response.end();</span>
+</span><span class='line'>            <span class="p">}</span> <span class="err">else</span> <span class="p">{</span> <span class="err">//</span> <span class="err">The</span> <span class="err">file</span> <span class="err">was</span> <span class="err">served</span> <span class="err">successfully</span>
+</span><span class='line'>                <span class="err">console.log(</span><span class="nt">&quot;&gt; &quot;</span> <span class="err">+</span> <span class="err">request.url</span> <span class="err">+</span> <span class="s2">&quot; - &quot;</span> <span class="err">+</span> <span class="err">res.message);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="err">});</span>
+</span><span class='line'>    <span class="err">});</span>
+</span><span class='line'><span class="err">}).listen(</span><span class="mi">1337</span><span class="err">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>//
-// Create a node-static server to serve the current directory
-//
-var file = new(static.Server)(&lsquo;.&rsquo;, { cache: 7200, headers: {&lsquo;X-Hello&rsquo;:&lsquo;World!&rsquo;} });</p>
-
-<p>require(&lsquo;http&rsquo;).createServer(function (request, response) {</p>
-
-<pre><code>request.addListener('end', function () {
-    //
-    // Serve files!
-    //
-    file.serve(request, response, function (err, res) {
-        if (err) { // An error as occured
-            console.error("&gt; Error serving " + request.url + " - " + err.message);
-            response.writeHead(err.status, err.headers);
-            response.end();
-        } else { // The file was served successfully
-            console.log("&gt; " + request.url + " - " + res.message);
-        }
-    });
-});
-</code></pre>
-
-<p>}).listen(1337);</p>
 
 <p>This code merely pulls any static files and servers them. It requires that you use naming conventions like index.html to make sure that a file is pulled up via &lsquo;/&rsquo;.  You also can call other pages just like you would on a normal apache server.
 The final part of this is configuring Bogart to use Http-proxy so that we can load the static pages only when we want to.
  To load http-proxy we need these two lines:</p>
 
-<p>var http = require(&lsquo;http&rsquo;)
-, httpProxy = require(&lsquo;http-proxy&rsquo;);</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">var</span> <span class="err">http</span> <span class="err">=</span> <span class="err">require(&#39;http&#39;)</span>
+</span><span class='line'><span class="err">,</span> <span class="err">httpProxy</span> <span class="err">=</span> <span class="err">require(&#39;http-proxy&#39;);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p> Then to use a proxy, we need this line:</p>
 
-<p>  router.get(&lsquo;/&rsquo;, function(req) {
-  return bogart.proxy(&lsquo;<a href="http://127.0.0.1:1337">http://127.0.0.1:1337</a>&rsquo;);
-});</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="err">router.get(&#39;/&#39;,</span> <span class="err">function(req)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="err">return</span> <span class="err">bogart.proxy(&#39;http://127.0.0.1:1337&#39;);</span>
+</span><span class='line'><span class="p">}</span><span class="err">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Remember that the static app is running on     1337.<br/>
+
+<p>Remember that the static app is running on port 1337.
  Well that is all for now.  I will be working on the other parts of this experiment and write more on it later.</p>
 ]]></content>
   </entry>
