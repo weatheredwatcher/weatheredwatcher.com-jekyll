@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n I&rsquo;ve doing some looking into my seo&#8217;ness the past couple of days. I looked at the Top Search Queries and found out that the phrase & &hellip;">
+  <meta name="description" content="\n The CSV format is a very handy format mucking around in data. In case you have to write some data into a CSV file, here&rsquo;s some code for your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,67 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/10/28/writing-an-array-to-csv-in-php/">Writing an Array to CSV in PHP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-28T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    The CSV format is a very handy format mucking around in data.  In case you have to write some data into a CSV file, here&rsquo;s some code for your parsing needs.  Quite a few classes exist to both read and write CSV files.  I have a class that I use to read csv into a database and another to create a csv file from a database&hellip;Both are killer classes that have great uses (and believe me I have used them) but sometimes you want a little bit of a simpler solution.  Just because php can be an OO language doesn&rsquo;t mean that you have to do everything in php the OO way.  The two main functions that we use for csv files are fopen and fputcsv.  If you have never used file handling in php before, do some reading up on the functions first.</p>
+
+<pre><code>$file = fopen("file.csv", "x");
+</code></pre>
+
+<p>In this example, we are actually creating a file called file.csv.  The key is in the second variable.  r,w,x are the basics.  Read, Write, Create.</p>
+
+<p>The second part of this lies in creating the file and putting the data into the csv file.  For this, we will use an array.</p>
+
+<pre><code>$list = array (
+    'Order,Customer,Date,Item,Quantity',
+    '001, John Doe, 001, 3);
+</code></pre>
+
+<p>This will create the headers and then add a row of data.  We have several choices here.  We can create the headers separately or we can create the entire file all at once.  Depending on how your data is structured, either way works</p>
+
+<p>Finally, we need to write the data to the csv file.  To do this, we are going to make use of the fputcsv function,</p>
+
+<pre><code>foreach ($list as $line) {
+    fputcsv($fp, split(',', $line));
+}
+</code></pre>
+
+<p>We have put the function in a foreach loop to make sure that each line in the array is read, parsed and written to the file. First we pass the file, $fp.  Then we tell fputcsv what to use for a deliminator and what to to put on the line.</p>
+
+<p>Make sure that you check out the php manual for more details on these funcitons.  There is a lot of power here waiting to be used.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -277,102 +338,6 @@ open (CSV, ") {
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/09/11/using-a-switch-in-php-and-verbose-variables/">Using a Switch in php&#8230;. And Verbose Variables</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-09-11T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    You know, the switch is a very useful and often times overlooked workhorse in php.  I find myself using it a lot right now.  I mainly use it to control a applications flow with session managment.  The switch parses a session variable and based on what it is set as, navigates to a certain point in the application.  Lets get right down to the dirty part!</p>
-
-<pre><code>$myswitch = $_SESSION['form'];
-
-switch ($myswitch){
-    case 'show':
-            show_form();       // if the form will not validate, it is resent
-            break;
-    case 'validate':       //is the form submited, then it is validated
-            validate_form();
-            break;        
-    case 'process':       //is the form validated, then it is processed
-            process_form();
-            break;        
-    default:
-            show_form();     //if nothing has happened yet, we show the form
-            break;        
-</code></pre>
-
-<p>}</p>
-
-<p>The first line is very important.  What if no session has been saved yet?  If I call the switch on the session variable, it might not exist and throw an error.  The rest is fairly straight forward.  A switch is, in reality just a better organized set of if..else statements.  I could also do something like this:</p>
-
-<pre><code>if ($a =="this){
-    do_this();
-}
-if (a$ == "that") {
-    do_that();
-}
-if (a$ == "nothing"){
-    do_nothing();
-}
-    do_something();
-</code></pre>
-
-<p>Lets compare to:</p>
-
-<pre><code>$myswitch = $_SESSION['contest_form'];
-
-switch ($myswitch){
-    case 'this':
-            do_this();
-            break;
-    case 'that':       
-            do_that();
-            break;        
-    case 'nothing':       
-            do_nothing();
-            break;        
-    default:
-            do_something();
-            break;        
-}
-</code></pre>
-
-<p>You see the difference?  Granted, my examples here are not to complicated, but it can get pretty hairy.  The biggest reason to use a switch instead of a bunch of if statements is readability.  One thing that I have learned is the best comments are really well formed code.
-Another great way to get around comments is verbose code.  You might type a few extra bits here and there, but ultimately you save yourself (and others) tons of head ache.</p>
-
-<p>If you have a variable that contains say an address, call it $address.  If it is the city, call it $city.  If it&rsquo;s the city from the address block of a user-registration table, call it $address_city_registration.  In the long run, having a very specific naming convention, and more importantly sticking to it, will help prevent a lot of errors in the variables.</p>
-
-<p>I can&rsquo;t count the times certain pieces of code didn&rsquo;t work for me because the variables didn&rsquo;t match entirely.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -406,6 +371,10 @@ Another great way to get around comments is verbose code.  You might type a few 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -419,10 +388,6 @@ Another great way to get around comments is verbose code.  You might type a few 
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

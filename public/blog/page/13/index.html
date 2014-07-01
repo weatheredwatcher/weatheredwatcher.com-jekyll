@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n My friend Ian made mention of having joined a site called gdgt that helps you list all the gadgets that you own. And, since the guy who dies with &hellip;">
+  <meta name="description" content="\n You know, the switch is a very useful and often times overlooked workhorse in php. I find myself using it a lot right now. I mainly use it to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,102 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/11/using-a-switch-in-php-and-verbose-variables/">Using a Switch in php&#8230;. And Verbose Variables</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-11T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    You know, the switch is a very useful and often times overlooked workhorse in php.  I find myself using it a lot right now.  I mainly use it to control a applications flow with session managment.  The switch parses a session variable and based on what it is set as, navigates to a certain point in the application.  Lets get right down to the dirty part!</p>
+
+<pre><code>$myswitch = $_SESSION['form'];
+
+switch ($myswitch){
+    case 'show':
+            show_form();       // if the form will not validate, it is resent
+            break;
+    case 'validate':       //is the form submited, then it is validated
+            validate_form();
+            break;        
+    case 'process':       //is the form validated, then it is processed
+            process_form();
+            break;        
+    default:
+            show_form();     //if nothing has happened yet, we show the form
+            break;        
+</code></pre>
+
+<p>}</p>
+
+<p>The first line is very important.  What if no session has been saved yet?  If I call the switch on the session variable, it might not exist and throw an error.  The rest is fairly straight forward.  A switch is, in reality just a better organized set of if..else statements.  I could also do something like this:</p>
+
+<pre><code>if ($a =="this){
+    do_this();
+}
+if (a$ == "that") {
+    do_that();
+}
+if (a$ == "nothing"){
+    do_nothing();
+}
+    do_something();
+</code></pre>
+
+<p>Lets compare to:</p>
+
+<pre><code>$myswitch = $_SESSION['contest_form'];
+
+switch ($myswitch){
+    case 'this':
+            do_this();
+            break;
+    case 'that':       
+            do_that();
+            break;        
+    case 'nothing':       
+            do_nothing();
+            break;        
+    default:
+            do_something();
+            break;        
+}
+</code></pre>
+
+<p>You see the difference?  Granted, my examples here are not to complicated, but it can get pretty hairy.  The biggest reason to use a switch instead of a bunch of if statements is readability.  One thing that I have learned is the best comments are really well formed code.
+Another great way to get around comments is verbose code.  You might type a few extra bits here and there, but ultimately you save yourself (and others) tons of head ache.</p>
+
+<p>If you have a variable that contains say an address, call it $address.  If it is the city, call it $city.  If it&rsquo;s the city from the address block of a user-registration table, call it $address_city_registration.  In the long run, having a very specific naming convention, and more importantly sticking to it, will help prevent a lot of errors in the variables.</p>
+
+<p>I can&rsquo;t count the times certain pieces of code didn&rsquo;t work for me because the variables didn&rsquo;t match entirely.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -241,70 +337,6 @@ header("refresh: $sec, $url);
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/08/22/just-when-you-thought-you-were-safe/">Just When You Thought You Were Safe&#8230;&#8230;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-08-22T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    It&rsquo;s kind of funny.  I&rsquo;ve bought tons of stuff on craigslist.  From cell phones, to computers.  Even furniture. Half the stuff in our house we&rsquo;ve bought on craigslist.  I&rsquo;ve put stuff up for sale on craigslist as well.  The only responses that I&rsquo;ve ever got were from scammers.  I put up a computer.  Sure enough, some lady offers me $100 more than what I was asking for, because she wanted it sent to her special &ldquo;international shipping&rdquo; to Virginia.  And she wanted to pay with eBay.  I said only via check with ID faxed to me.  She insisted on eBay.  I said no dice.  I&rsquo;ve put a timeshare up for rent on craigslist.  Some guy in England wanted to rent it for a week and send the funds to me via a cashiers check that his company was giving him for his vacation.  Once again, no dice.  I thought nothing though of offering my services as a PC Reapair Tech on craigslist.  Come on.  I fix computer.  Then, I got the following email:</p>
-
-<blockquote><p>Hi,
-I saw your email on craigslist and i was hoping if you could help me
-repair and install some applications on 15(fifteen)computers, kindly
-get back to me if you will be available so i could provide you with
-more details on what will be done on them, i will await your swift
-response if you will be available,Thank you
-Wilfort</p></blockquote>
-
-<p>This is a possible situation.  But the language of the email made the cynic in me very skeptical.  I answered, waiting for the scam.  Sure enough, a few hours later I got this email back from him:</p>
-
-<blockquote><p>Hello,
-Thank you for your reply, i have 15 (fifteen) HP computer(Intel Pentium IV) which broke down and i will need you to work on them</p>
-
-<p>   Below are the things needed to be done one on each laptops:</p>
-
-<p>1 Format Hard Drive
-2 Microsoft Office Package
-3 Install Win Xp with Service Pack 2
-4 AVG Virus Software (Free Lifetime Updates)
-5 Laptop Cleaning of the keyboard, screen and other case.
-6 Adobe Acrobat
-7 Diagnostics of the entire system after to check hard, CD Rom,floppy, etc.</p>
-
-<p>   kindly let me know how much it will cost me for the service of all the computers, i have a shipping agent that will be shipping them down to you for the repair along with all the software necessary and after you done with the repair and installation the same shipping agent will be picking them up, the mode of payment is by a US certified check mailed and address to you from my company,I should have make this a phone order but  i am presently on tourism in a remote area in East Anglia and my phone is presently not on roam and also hard to get to a phohe boot around here.let me know if this is ok by you so we may proceed, i will await your quick response. Thank you
-Wilfort</p></blockquote>
-
-<p>This is just screaming: &ldquo;I think your a dumb idiot who will take my bait.&rdquo;  Did this guy read my ad?  Did he follow the link to my website and see my history and qualifications?  This is getting ridiculous.  The sad part is that people have to fall for this shit or it would not be continuing.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -338,6 +370,10 @@ Wilfort</p></blockquote>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -351,10 +387,6 @@ Wilfort</p></blockquote>
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

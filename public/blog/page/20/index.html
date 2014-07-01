@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n I just downloaded the nightly of Wordpress 2.7 and I installed it on my server.  I am loving it.  The new dashboard layout it absolutely killer.  &hellip;">
+  <meta name="description" content="\n Just thought that I would post a screenshot of my Desktop today.  Gentoo Linux with Songbird running. ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/11/13/a-screenshot/">A Screenshot</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-13T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Just thought that I would post a screenshot of my Desktop today.  Gentoo Linux with Songbird running.</p>
+
+<p><img src="http://www.weatheredwatcher.com/blog/wp-content/uploads/2008/11/thm_mydesktop.png" alt="gentoo" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -214,73 +252,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/09/26/how-to-become-a-wordpress-ninja-or-the-tao-of-wordpress-part-1/">How to Become a Wordpress Ninja (or the Tao of Wordpress) Part 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    I&rsquo;ve spent the past two months now hacking Wordpress into peices.  I&rsquo;ve decided to share the wisdom that I&rsquo;ve learned along the way here at my new Wordpress Blog.
-Here is a bit of background:</p>
-
-<p>I was hired by a local Technical College to build a podcasting server using Wordpress.  Everything that I did had to be carefully branded to the college and also built keeping in mind that a majority of the users would be very much not computer literate.</p>
-
-<p>First of all,  I created a gateway file that would direct users from the school website into the podcast blogs.  I created two pages, one for students and one for staff.  For starters, the student page had to contain a drop-down menu listing all the instructors on the site.  I populated the drop down from the database of wordpress users (oh..btw, this is wordpress MU)</p>
-
-<pre><code>$result = mysql_query("SELECT display_name, user_nicename FROM wp_users");
-while ($row=mysql_fetch_row($result)){
-    $blog_id[]=$row[0];
-    $blog_domain[]=$row[1];
-}
-
-mysql_close($db);
-</code></pre>
-
-<p>This first bit of code creates a query object and dumps the content of two rows in to two arrays.</p>
-
-<pre><code>$blog_id and     $blog_domain
-</code></pre>
-
-<p>The second part of this magic uses some really nifty php code that I like a lot:</p>
-
-<p>foreach( $blog_id as $key => $v)</p>
-
-<p>This little gem takes the array, places the array key into     $key and the array value into      $v this allows us to do some crazy manipulation&hellip;.that is, I can pull from the second array in my foreach loop.</p>
-
-<p>This took care of the students side.  For the staff side, I read countless Forum entries on &ldquo;customizing&rdquo; the login&hellip;.there is even a plugin to help you with this.  All of these methods to me seemed inadequate for my purposes, so I copied the relavant code from wp-login.php and stuck it in my own file.  Viola!  A truly custom Wordpress Login!!</p>
-
-<p>Check back later as I get even dirtier with the mods!!</p>
-
-<p>weatheredwatcher</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -314,6 +285,10 @@ mysql_close($db);
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -327,10 +302,6 @@ mysql_close($db);
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

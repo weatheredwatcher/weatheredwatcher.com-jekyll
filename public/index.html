@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="It&rsquo;s been a while since my last blog entry, I know!! I feel bad, so here is a bit of php goodness to make us all feel better! It&rsquo;s always &hellip;">
+  <meta name="description" content="I&rsquo;ve been running a build process for an application that I am working on that is rather complicated. Originally I was manually managing the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,136 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects With Ant</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-07T10:46:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve been running a build process for an application that I am working on that is rather complicated.  Originally I was manually managing the build process, with a few scripts to supplement my procedures.  The past few days I have finally had the time to sit down and consolidate my build into a single ant script.  The company that I am contracting for is a heavy Java shop, so I am using Ant mostly because everyone will have access to ant.  I am use to make so it&rsquo;s been a bit of a learning curve, but Ant is a very cool thing.  So, for starters, let me outline my current build process and then I will show you how I have automated it.</p>
+
+<ol>
+<li>We pull the code from the QA branch in GitHub</li>
+<li>Run Composer over the code to install all the dependencies</li>
+<li>We tag the build with a version tag</li>
+<li>We write the version tag and the date to a version file</li>
+<li>We tar up ONLY the files that are absolutely needed to run the application (we have tools, docs, ect that we do not need)</li>
+<li>We send the final archive to the server team for deployment</li>
+</ol>
+
+
+<p>Actually, I started using Ant early on for the final tar build.  Ant has a great task for tar.  Here is the target for that.</p>
+
+<pre><code>&lt;target name="deploy"&gt;
+      &lt;tar destfile="deploy.tar"
+           basedir="build/"   
+           excludes="build/**, database/**, docs/**.vagrant/**"/&gt;
+
+&lt;/target&gt;
+</code></pre>
+
+<p>This essentially creates a file called <code>deploy.tar</code> in a sub-folder called <code>build/</code>.  It excludes anything already in <code>build/</code> as well as <code>database/</code>, <code>docs/', and</code>.vagrant&#8217;.  Obviously I truncated my list&hellip;it is a lot longer in reality!  A lot of files sit in the root like the <code>Vagrantfile</code>, a <code>Makefile</code> the files for composer.</p>
+
+<p>So this is about the final step.  But I still need to automate the rest.</p>
+
+<p>The first step is grabbing my code from GitHub.  Eclipse offers a task for any that is based on jgit.  You need a few dependencies for this to work.  Namely the jgit class file and the jgit-ant class file.  You also need the ssh library, which I was already using for some other scripts.</p>
+
+<p>You need to load them as resources, which is done like so:</p>
+
+<pre><code>&lt;taskdef resource="org/eclipse/jgit/ant/ant-tasks.properties"&gt;
+     &lt;classpath&gt;
+       &lt;pathelement location="resources/org.eclipse.jgit.ant-3.0.0.2013061825-r.jar"/&gt;
+       &lt;pathelement location="resources/org.eclipse.jgit-3.0.0.2013061825-r.jar"/&gt;
+       &lt;pathelement location="../jsch-0.1.49.jar"/&gt;
+     &lt;/classpath&gt;
+&lt;/taskdef&gt;
+</code></pre>
+
+<p>Then we set up the task for cloning:</p>
+
+<pre><code>&lt;target name="clone"&gt;
+     &lt;git-clone 
+         uri="git@github.com:weatheredwatcher/weatheredwatcher.git" 
+         branch="testing"
+         dest="build/" /&gt;
+&lt;/target&gt;
+</code></pre>
+
+<p>(Note that I am using this site rather then the project that I am working on&hellip;)</p>
+
+<p>The next step is running Composer.  For those that do not know, Composer is a dependency management tool for PHP.  We are loading several dependencies as well as some custom libs via composer so it is important that we generate the right files.</p>
+
+<pre><code>&lt;target name="init" description="Installing Denpendencies"&gt;
+  &lt;delete file="build/composer.lock" /&gt;
+
+    &lt;exec executable="php" failonerror="true"
+        dir="build/"&gt;
+        &lt;arg value="composer.phar" /&gt;
+        &lt;arg value="install" /&gt;
+  &lt;/exec&gt;
+
+&lt;/target&gt;
+</code></pre>
+
+<p>So what we are doing here is first we delete the lock file. Typically the devs install a few extra tools that are not needed on the QA server.  So we remove the lock file and then only install the production level requirements with Composer.  <code>failonerror</code> ensure that we get an error if anything bad happens rather then a success.</p>
+
+<p>As far as tagging goes, I feel it is better to do the tagging in GitHub rather then in the build process.  So we will only be writing to a version file.  We need to write the current tag as well as the build date to this file.  The git command for displaying the current tag is <code>git describe --exact-match --abbrev=0</code>.  We antify this like so:</p>
+
+<pre><code>&lt;exec executable="git" failonerror="true"
+   dir="build/"&gt;
+   &lt;arg value="describe" /&gt;
+   &lt;arg value="--exact-match" /&gt;
+   &lt;arg value="--abbrev=0" /&gt;
+   &lt;redirector output="build/version" /&gt;
+&lt;/exec&gt;
+</code></pre>
+
+<p>The last part was hard.  You cannot pass a redirect <code>&gt;</code> through the <code>exec</code> task.  Instead, we use the <code>redirector</code>.  The date is similar, but we add an append option to the redirector to make sure we do not overwrite the file.</p>
+
+<pre><code>&lt;exec executable="date" dir="build/"&gt;
+  &lt;redirector output="build/version" append="true"/&gt;
+&lt;/exec&gt;  
+</code></pre>
+
+<p>So if we put it all together into a massive ant script, we have nearly the entire deploy build.  The last part is the one where we send it along to the Server Team&rsquo;s folders via a mount and a copy.</p>
+
+<p>The final thing to do is to clean up.</p>
+
+<pre><code>&lt;target name="clean"&gt;
+    &lt;delete dir="build"/&gt;
+&lt;/target&gt;
+</code></pre>
+
+<p>My next step will be taking this process and integrating it into a Hudson build for Continuous Integration or CI.  Obviously, Hudson will be able to take on a lot of this functionality without any ant scripts&hellip;but I also can just have Hudson run the ant script if I want.  We will see.  Until then, happy coding!!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -715,53 +845,6 @@ So go ahead and give it a try!  You can install it as easy as pie&hellip;look in
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/07/2013-is-here-people/">2013 Is Here People</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-07T00:00:00-05:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Well, it&rsquo;s here.  2013.  We made it!  2012 was a blast, but now we have another year to make plans for and strive for greatness!  I am pleased to say that a majority of my resolutions from last year where meet!  So, in that spirit, I shall now give you all my goals for 2013\n
-  * Learn Node.js
-  * Finish my python VHost app
-  * Write a better mysql gui for *nix
-  * Become a Debian Developer
-  * Speak even more on php and Open Source
-  * Get at least five articles published
-  * Get started on my php book
-  * Switch from CodeIgniter to Lithium</p>
-
-<p>So there it is!  My little wish list for 2013!
-I&rsquo;ve install cloud9 ide on my laptop today (if you are wondering, I will blog about it next) and in that is a good start on the Node js.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -793,6 +876,10 @@ I&rsquo;ve install cloud9 ide on my laptop today (if you are wondering, I will b
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -806,10 +893,6 @@ I&rsquo;ve install cloud9 ide on my laptop today (if you are wondering, I will b
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

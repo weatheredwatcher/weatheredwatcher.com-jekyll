@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="So, as I was putting my daughter to bed tonight, I saw that she had two of my Doctor Who comics on her night stand(#1 and #2). For those who do not &hellip;">
+  <meta name="description" content="I can&rsquo;t tell you how many times I&rsquo;ve seen passwords put in databases using the md5 function that is built into php. It is fast, easy to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/01/22/using-blowfish-to-encrpyt-your-passwords/">Using Blowfish to Encrpyt Your Passwords</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-22T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I can&rsquo;t tell you how many times I&rsquo;ve seen passwords put in databases using the md5 function that is built into php.  It is fast, easy to use and very insecure.  Granted, it&rsquo;s really just a last defense in case the database is accessed right?  True, but what if your users are in the majority of internet users who use the same passwords for everything?  So let&rsquo;s talk about using a little bit higher security on our passwords.\n</p>
+
+<p>Here is a helper I wrote for Codeigniter
+<a href="https://gist.github.com/1655410.js?file=brypt-helper.php">https://gist.github.com/1655410.js?file=brypt-helper.php</a></p>
+
+<p> So here is what you need to know: We are using the function crypt().  The syntax for crypt is:</p>
+
+<pre><code>crypt(string $string, seed $seed);
+</code></pre>
+
+<p>Check the php references for details on the other methods of encryption.  We are only talking about bcrypt or bluefish toad
+ The way that we specify that it is bluefish that we infact want to use is in the seed itself.  We prefix it with a $2a$05$.  The first part, $2a$ is what give us the encryption method, bluefish.  The second part, $05$ sets how many passes will be used.  The more passes, the more secure, but also the longer it takes to encrypt.  The seed is the key.  By using a seed that is unique, it makes it impossible to break the hash with what is called a &ldquo;rainbow table.&rdquo;  You make a rainbow table by compiling a dictionary of words and running them through the hash (md5, sha, bluefish) and this gives you a massive list of possible passwords and their hashes.  The adding of a seed removes the chances that the password/hash will be in a rainbow table.  The use of a seed is pretty effective in making the password unbreakable&hellip;.well that is if only the hash was exposed&hellip;the seed is typically located in the table right next to the hash!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -214,84 +261,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/09/15/managing-virtual-hosts-on-a-mac/">Managing Virtual Hosts on a Mac</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-15T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>One of the coolest tricks that you can do with Apache (ok, so not the coolest but certainly one of the most useful!!) is setting up VirtualHost.  VirtualHost allows you to host many different domains on a single IP address.  As complicated as it is to setup on a real web server, it is even more so on a development machine that doesn&rsquo;t have an IP address or domain registered to a DNS.</p>
-
-<p>In order to set VHosts up on a server, you must:</p>
-
-<pre><code>*Activate Virtual Hosts
-*Add your Virtual Hosts File
-*Reboot Apache
-</code></pre>
-
-<p>Steps 1 and 2 require some editing of the httpd.conf file and a vhosts file.  With that being said, if you want to do this on your local
-dev machine, you need to add another step: Add the VirtualHost to the hosts file.  Once you make sure that VirtualHosts are activated
-the rest of the code involved is something like this:</p>
-
-<p>httpd_vhost.conf:</p>
-
-<pre><code> NameVirtualHost *:80
-
- &lt;Directory "*/path/to/site/"&gt;
- Allow From All
- AllowOverride All
- &lt;/Directory&gt;
-
- &lt;VirtualHost *:80&gt; 
-
-     ServerName "sitename"
-     DocumentRoot "/path/to/site"
- &lt;/VirtualHost&gt;
-</code></pre>
-
-<p>hosts:</p>
-
-<pre><code> 127.0.0.1  sitename
-</code></pre>
-
-<p>  And you will have to do these two things for each and every site that you want to use with VirtualHost.  Fear not, there is another
-way!  I found an app called VirtualHostX that takes care of everything for you.  It costs.  It costs a little bit more than I would want to spend
-for taking care of these two tasks for me.  But it is a helpful app none-the-less. Get it here</p>
-
-<p>In addition to this, if you also install PassengerPhusion, your rails apps will also run without you having to use web-brick!</p>
-
-<p>With all of this talk, I have made the decision that the very first cross-platform app that I intend to build for my new software house
-will be one that does just this.  I will write it first in Objective C and then port it to Linux and then in C# for Windows. (I hope that I can port
-the objective c code straight into Linux&hellip;but if not I can use C# for both Linux and Windows) So stay tuned for the free beta application!!</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -325,6 +294,10 @@ the objective c code straight into Linux&hellip;but if not I can use C# for both
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -338,10 +311,6 @@ the objective c code straight into Linux&hellip;but if not I can use C# for both
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

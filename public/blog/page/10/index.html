@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n Ever since the iPad was announced the other day, I have been giving a lot of thought to it. I have to admit, I&rsquo;ve been thinking a lot about &hellip;">
+  <meta name="description" content="One major headache in any major project is how you are going to handle the errors. For starters, it is not a good idea to show errors on a live, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/02/02/custom-error-handling-with-php/">Custom Error Handling With PHP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-02T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>   One major headache in any major project is how you are going to handle the errors.  For starters, it is not a good idea to show errors on a live, production site.  But on the other hand, you don&rsquo;t want your system to blow-up and you not know what has happened.  There are lots of ways that you could handle this situation.  This is just the way that I am handling it on my current project.  Background: My current project is a behind-the-firewall-intranet application.  It is not accessible for out side the office.  So it&rsquo;s safe to leave error messages on&hellip;except for the fact that no one wants to see the error messages except for me.  I was given the task of making errors as terse and minimum as possible in their output, while at the same time recording more detailed information in some kind of log file that could be seen my anyone who wanted to know more information.</p>
+
+<p><em>set_error_handler</em></p>
+
+<p>The first bit of magic that I used to accomplish my goals is the set_error_handler tag.  Essentially, we create a function, when passed the error codes, out puts user friendly message and can even keep the program running after a near fatal error.</p>
+
+<p>We pass the function the error number, string, file and line number.  This allows us to create useful output.  We can even branch out further, displaying different messages depending on the error number.</p>
+
+<p>The only thing we have to do to make this work is to place the function set_error_handler(&ldquo;myErrorHandler&rdquo;); on every page that you want this custom error handling to occur.</p>
+
+<p>The next step was to figure out a way to store the data without actually displaying it.  To do this, I wrote a simple class file that writes data to a database.  You can just as well write the data to file.  The principle is the same.</p>
+
+<p>The new function for handling the errors looks like this:</p>
+
+<p>This way, I can use simple checks to see if processes for successful or not, writing any messages to a log to check later.  I also dump the contents of the log in a table so that if a user throws an error, they could potentially see what that error was.</p>
+
+<p>Feel free to use this code in your own projects.  You can always change it to write to a flat file, csv or xml file.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -308,47 +360,6 @@ Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a g
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/12/17/syncing-with-google-calendar-all-of-them/">Syncing With Google Calendar (All of Them)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-12-17T00:00:00-05:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    I have been using Google &ldquo;products&rdquo; for years now.  When every something new comes out, I just have to give it a try.  I love Google Notebook, but it seems that not enough people shared my love.  Of course Gmail can be called life changing.  Another great product that has gotten me through a lot is Calendar.  Being able to sync work and classes and family events in a place that is accessible anywhere is a very cool thing indeed.    I also have to say that I love my Mac and my iPhone.  Syncing the three is fairly easy.  You subscribe to your calendars in iCal, and sync iCal with the iPhone.  The only thing is, my iPhone is always with me, the Mac and iCal not always.  So it became necessary to find a way to create a two way sync between Google Calendar and my iPhone.  Oh yeah, and I have more than one calendar and I want them all to sync.  Using the Exchange server on the iPhone to connect was easy, but I didn&rsquo;t like have the mail was handled.  IMAP works just fine thank you very much.  Also, it only syncs your primary calendar.  If I created other calendars, or subscribe to others, they don&rsquo;t even show up.  I found some articles on how to sync using CalDav and it seemed to be just right for my needs.  To sync your primary calendar, add a new CalDav to the iPHone and enter this in as your url:  <a href="https://www.google.com/calendar/dav/you@gmail.com/user">https://www.google.com/calendar/dav/you@gmail.com/user/</a>  Add your google username and password and you should be good to go.  Now, for the other calendars, you need to goto your calendars in google and take a look at the ical link.  In the string, you should see a gianormous string @group.calendar.google.com.  Write that down.  Then, add another caldav calendar and in the url enter this: <a href="https://www.google.com/calendar/dav/">https://www.google.com/calendar/dav/</a>[string of numbers and letters]@group.calendar.google.com/user/  Fill in the username and password same as above.  And there you go!  A few things to note:</p>
-
-<p><em>You must use https
-</em>The url will disapear in both instances and be repalced my <a href="https://www.google.com">https://www.google.com</a> It&rsquo;s suppose to</p>
-
-<p>On another note, I have been playing around a bit with Thunderbird 3 and I am impressed with it as a mail client.  I found a Lifehacker article that talked about hacking a tab to display Google Wave permanently and that&rsquo;s made Thunderbird very useful.  I used Thunderbird for my email in Linux so I am comfortable with it.  The only thing that is a bit cumbersome is the calendar extension, Lightning.  Sure I installed a Nightly Build for 3 and it works fine, but Google Calendar Syncing is a bit of an issue.  Once again, I can subscribe as caldav to Google Calendar (use the aboce strings, but change /user to /events) The only issue is that I can&rsquo;t add or change secondary calendars in Lightning.  It has some permissions issues with Google that havn&rsquo;t been worked out yet.  So I applied the same hack that let me have Google Wave in my Thunderbird to give me Google Calendar in my Thunderbird.  The result is a great , quick fix to the Calendar syncing issue!</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -382,6 +393,10 @@ Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a g
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -395,10 +410,6 @@ Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a g
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

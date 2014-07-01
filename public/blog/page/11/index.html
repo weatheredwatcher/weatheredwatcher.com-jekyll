@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n Today we are going to create a mailer class that will assist us in emailing site visitors. Lets start out buy creating the class and the variables &hellip;">
+  <meta name="description" content="\n I have been using Google &ldquo;products&rdquo; for years now. When every something new comes out, I just have to give it a try. I love Google &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/12/17/syncing-with-google-calendar-all-of-them/">Syncing With Google Calendar (All of Them)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-12-17T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    I have been using Google &ldquo;products&rdquo; for years now.  When every something new comes out, I just have to give it a try.  I love Google Notebook, but it seems that not enough people shared my love.  Of course Gmail can be called life changing.  Another great product that has gotten me through a lot is Calendar.  Being able to sync work and classes and family events in a place that is accessible anywhere is a very cool thing indeed.    I also have to say that I love my Mac and my iPhone.  Syncing the three is fairly easy.  You subscribe to your calendars in iCal, and sync iCal with the iPhone.  The only thing is, my iPhone is always with me, the Mac and iCal not always.  So it became necessary to find a way to create a two way sync between Google Calendar and my iPhone.  Oh yeah, and I have more than one calendar and I want them all to sync.  Using the Exchange server on the iPhone to connect was easy, but I didn&rsquo;t like have the mail was handled.  IMAP works just fine thank you very much.  Also, it only syncs your primary calendar.  If I created other calendars, or subscribe to others, they don&rsquo;t even show up.  I found some articles on how to sync using CalDav and it seemed to be just right for my needs.  To sync your primary calendar, add a new CalDav to the iPHone and enter this in as your url:  <a href="https://www.google.com/calendar/dav/you@gmail.com/user">https://www.google.com/calendar/dav/you@gmail.com/user/</a>  Add your google username and password and you should be good to go.  Now, for the other calendars, you need to goto your calendars in google and take a look at the ical link.  In the string, you should see a gianormous string @group.calendar.google.com.  Write that down.  Then, add another caldav calendar and in the url enter this: <a href="https://www.google.com/calendar/dav/">https://www.google.com/calendar/dav/</a>[string of numbers and letters]@group.calendar.google.com/user/  Fill in the username and password same as above.  And there you go!  A few things to note:</p>
+
+<p><em>You must use https
+</em>The url will disapear in both instances and be repalced my <a href="https://www.google.com">https://www.google.com</a> It&rsquo;s suppose to</p>
+
+<p>On another note, I have been playing around a bit with Thunderbird 3 and I am impressed with it as a mail client.  I found a Lifehacker article that talked about hacking a tab to display Google Wave permanently and that&rsquo;s made Thunderbird very useful.  I used Thunderbird for my email in Linux so I am comfortable with it.  The only thing that is a bit cumbersome is the calendar extension, Lightning.  Sure I installed a Nightly Build for 3 and it works fine, but Google Calendar Syncing is a bit of an issue.  Once again, I can subscribe as caldav to Google Calendar (use the aboce strings, but change /user to /events) The only issue is that I can&rsquo;t add or change secondary calendars in Lightning.  It has some permissions issues with Google that havn&rsquo;t been worked out yet.  So I applied the same hack that let me have Google Wave in my Thunderbird to give me Google Calendar in my Thunderbird.  The result is a great , quick fix to the Calendar syncing issue!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -409,67 +450,6 @@ echo $myCar-&gt;get_model();
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/10/28/writing-an-array-to-csv-in-php/">Writing an Array to CSV in PHP</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-10-28T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    The CSV format is a very handy format mucking around in data.  In case you have to write some data into a CSV file, here&rsquo;s some code for your parsing needs.  Quite a few classes exist to both read and write CSV files.  I have a class that I use to read csv into a database and another to create a csv file from a database&hellip;Both are killer classes that have great uses (and believe me I have used them) but sometimes you want a little bit of a simpler solution.  Just because php can be an OO language doesn&rsquo;t mean that you have to do everything in php the OO way.  The two main functions that we use for csv files are fopen and fputcsv.  If you have never used file handling in php before, do some reading up on the functions first.</p>
-
-<pre><code>$file = fopen("file.csv", "x");
-</code></pre>
-
-<p>In this example, we are actually creating a file called file.csv.  The key is in the second variable.  r,w,x are the basics.  Read, Write, Create.</p>
-
-<p>The second part of this lies in creating the file and putting the data into the csv file.  For this, we will use an array.</p>
-
-<pre><code>$list = array (
-    'Order,Customer,Date,Item,Quantity',
-    '001, John Doe, 001, 3);
-</code></pre>
-
-<p>This will create the headers and then add a row of data.  We have several choices here.  We can create the headers separately or we can create the entire file all at once.  Depending on how your data is structured, either way works</p>
-
-<p>Finally, we need to write the data to the csv file.  To do this, we are going to make use of the fputcsv function,</p>
-
-<pre><code>foreach ($list as $line) {
-    fputcsv($fp, split(',', $line));
-}
-</code></pre>
-
-<p>We have put the function in a foreach loop to make sure that each line in the array is read, parsed and written to the file. First we pass the file, $fp.  Then we tell fputcsv what to use for a deliminator and what to to put on the line.</p>
-
-<p>Make sure that you check out the php manual for more details on these funcitons.  There is a lot of power here waiting to be used.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -503,6 +483,10 @@ echo $myCar-&gt;get_model();
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -516,10 +500,6 @@ echo $myCar-&gt;get_model();
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>

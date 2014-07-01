@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n I&rsquo;ve been trying out a lot of IDE&rsquo;s lately. I&rsquo;ve decided to post a run down of them and blog about my personal preferences. I& &hellip;">
+  <meta name="description" content="\n Okay, so here is the situation: I promised my brother that I&rsquo;d email him my current resume a week ago. I currently do not live in a place &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/13/a-simple-task-not-so-simple-solution/">A Simple task&#8230;not So Simple Solution</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-13T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Okay, so here is the situation:  I promised my brother that I&rsquo;d email him my current resume a week ago.  I currently do not live in a place with interwebs, so I am a slave to internet cafe&rsquo;s at the moment.  So, I continued to forget to send it to him.  I&rsquo;ve been meaning to upload my resume to google docs for some time now, and I decided to see if I could get my resume to my brother using nothing but my iphone.</p>
+
+<p>Round One:  I had at one point installed the free version of Savy Soda&rsquo;s Documents2.  I synced that back on the iphone and gave it a whirl.  Uploading a pdf of my resume to Documents2 was not that hard.  When I tried to load it into my Google Docs, it wouldn&rsquo;t do it.</p>
+
+<p>David 0 Failure 1</p>
+
+<p>Round Two:  Documents2 has the ability to email a doc to someone. I tried to
+1) email directly to my brother = Fail!
+2) email to google docs = Epic Fail!</p>
+
+<p>David 0 Fail 2</p>
+
+<p>Round Three:  I remember Evernote.  Everyone seems to love evernote.  I read about it all the time.  I even had an account.  I installed the iPhone app.  There is no way to sync wirelessly to it.  I need to have the note already on line or I need evernote installed on my mac.  Epic Fail!</p>
+
+<p>David 0 Fail 3</p>
+
+<p>Round Four:  The next day I am at an internet cafe.  I can, from here upload my resume to Google docs and to Evernote.  (I could of course, just email it to my brother but then I wouldn&rsquo;t be geek then would I!?) So Google Doc. This was my first thought.  Can&rsquo;t email the pdf to someone.  Google Docs won&rsquo;t allow it.  I upload my doc version but it gets slaughtered by Google Docs.  I upload the pdf to evernote, and then I can email it from my iPhone to anyone!!</p>
+
+<p>David over 9000 ftw! Fail 3</p>
+
+<p>Evernote, it is the beginning of a beautiful friendship!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -293,89 +349,6 @@ $header = $_POST['header'];
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/07/20/a-simple-mvc-framework-part-2/">A Simple MVC Framework Part 2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-07-20T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    In this post we will talk about the requirements of having two views of the same data in PHP.  First of all, we must do a little bit of modification of our controller</p>
-
-<pre><code>$id = $_GET['id'];
-$view = $_GET['view'];
-
-if (!isset($id)){
-
-    $id = "home";
-
-}
-
-include($id.'.php');
-</code></pre>
-
-<p>As you can see, we added a single line to this code:     $view = $_GET[&lsquo;view&rsquo;];</p>
-
-<p>This allows us to specify what page view we are going to use at this moment.</p>
-
-<p>It would be passed to the url like this: <a href="http://weatheredwatcher.com/ccd_framework/?id=home&amp;view=user">http://weatheredwatcher.com/ccd_framework/?id=home&amp;view=user</a></p>
-
-<p>Of course, we are not done.  There is more code that is needed to make this work.</p>
-
-<p>For staters, we divide the page into two functions.  One function contains the code for the user view and the other contains the code for the edit view.  The switch is made via the URL and is controlled like this:</p>
-
-<pre><code>$page_id ='home';  //this is where you can set exactly what this page is.
-$view = $_GET['view'];  //this pulls the view from the URL
-
-     if($view == 'user'){  //here we check if this view is set to user
-
-        user($page_id);
-     }
-     else{
-         if($view == 'edit'){  //here will check if this view is set to edit
-
-             edit($page_id);
-     }
-    else {  //this final else creates a catch-all for any errors that might exist
-
-
-
-         error_page();
-    }
-}
-</code></pre>
-
-<p>As you can see, three functions must be defined.  A user function, an edit function and an error_page function</p>
-
-<p>Next time we will go over the code needed to add database dynamics to this code.  That is, we will store the content of the page in a datasource and we will show how to both display and edit this data using our views.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -409,6 +382,10 @@ $view = $_GET['view'];  //this pulls the view from the URL
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
       </li>
     
@@ -422,10 +399,6 @@ $view = $_GET['view'];  //this pulls the view from the URL
     
       <li class="post">
         <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/2013-is-here-people/">2013 is here people</a>
       </li>
     
   </ul>
