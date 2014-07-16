@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: java, | weatheredwatcher]]></title>
-  <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/categories/java/atom.xml" rel="self"/>
-  <link href="http://weatheredwatcher.github.io/weatheredwatcher/"/>
-  <updated>2014-06-30T23:41:35-04:00</updated>
-  <id>http://weatheredwatcher.github.io/weatheredwatcher/</id>
+  <link href="http://www.weatheredwatcher.com/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://www.weatheredwatcher.com/"/>
+  <updated>2014-07-15T23:00:51-04:00</updated>
+  <id>http://www.weatheredwatcher.com/</id>
   <author>
     <name><![CDATA[weatheredwatcher]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[DevOps: Bulding Projects with Ant]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/08/07/devops-building-projects-with-ant/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/08/07/devops-building-projects-with-ant/"/>
     <updated>2013-08-07T10:46:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/08/07/devops-building-projects-with-ant</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/08/07/devops-building-projects-with-ant</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve been running a build process for an application that I am working on that is rather complicated.  Originally I was manually managing the build process, with a few scripts to supplement my procedures.  The past few days I have finally had the time to sit down and consolidate my build into a single ant script.  The company that I am contracting for is a heavy Java shop, so I am using Ant mostly because everyone will have access to ant.  I am use to make so it&rsquo;s been a bit of a learning curve, but Ant is a very cool thing.  So, for starters, let me outline my current build process and then I will show you how I have automated it.</p>
 
 <ol>

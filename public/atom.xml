@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[weatheredwatcher]]></title>
-  <link href="http://weatheredwatcher.github.io/weatheredwatcher/atom.xml" rel="self"/>
-  <link href="http://weatheredwatcher.github.io/weatheredwatcher/"/>
-  <updated>2014-06-30T23:41:35-04:00</updated>
-  <id>http://weatheredwatcher.github.io/weatheredwatcher/</id>
+  <link href="http://www.weatheredwatcher.com/atom.xml" rel="self"/>
+  <link href="http://www.weatheredwatcher.com/"/>
+  <updated>2014-07-15T23:00:51-04:00</updated>
+  <id>http://www.weatheredwatcher.com/</id>
   <author>
     <name><![CDATA[weatheredwatcher]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[DevOps: Bulding Projects with Ant]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/08/07/devops-building-projects-with-ant/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/08/07/devops-building-projects-with-ant/"/>
     <updated>2013-08-07T10:46:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/08/07/devops-building-projects-with-ant</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/08/07/devops-building-projects-with-ant</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve been running a build process for an application that I am working on that is rather complicated.  Originally I was manually managing the build process, with a few scripts to supplement my procedures.  The past few days I have finally had the time to sit down and consolidate my build into a single ant script.  The company that I am contracting for is a heavy Java shop, so I am using Ant mostly because everyone will have access to ant.  I am use to make so it&rsquo;s been a bit of a learning curve, but Ant is a very cool thing.  So, for starters, let me outline my current build process and then I will show you how I have automated it.</p>
 
 <ol>
@@ -118,9 +118,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Zend Style Config Files Everywhere]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/07/02/using-zend-config-files-everywhere/"/>
     <updated>2013-07-02T10:46:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/07/02/using-zend-config-files-everywhere</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last blog entry, I know!!  I feel bad, so here is a bit of php goodness to make us all feel better!</p>
 
 <p>It&rsquo;s always a good security practice to remove configuration from your web-app.  One way to do this is to use a configuration file.  Now, Zend has a very cool way of doing this,(<code>Zend\Config\Reader</code>) but the client that I am with right now is using a solution based on Codeigniter.  However, since they are planning on eventually moving to Zend anyway, I figured I would implement a solution based on the Zend config solution.</p>
@@ -193,9 +193,9 @@ $db['default']['database'] = $db['name'];
   
   <entry>
     <title type="html"><![CDATA[Preparing a Dev Environment with Puppet]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/02/01/preparing-a-dev-environment-with-puppet/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/02/01/preparing-a-dev-environment-with-puppet/"/>
     <updated>2013-02-01T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/02/01/preparing-a-dev-environment-with-puppet</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/02/01/preparing-a-dev-environment-with-puppet</id>
     <content type="html"><![CDATA[<p>For starts, I now have markup installed in my blog, so no more typing html!! Yea!\n
 Today we are going to talk about Puppet.  No, not Pinochio, or those Punch and Judy dolls.  This is Puppet as in the server provisioning tool.</p>
 
@@ -490,9 +490,9 @@ Today we are going to talk about Puppet.  No, not Pinochio, or those Punch and J
   
   <entry>
     <title type="html"><![CDATA[Running Multiple Apps On NodeJs]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/24/running-multiple-apps-on-nodejs/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/01/24/running-multiple-apps-on-nodejs/"/>
     <updated>2013-01-24T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/24/running-multiple-apps-on-nodejs</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/01/24/running-multiple-apps-on-nodejs</id>
     <content type="html"><![CDATA[<p>So, what I am wanting to so is to be able to run multiple apps on Nodejs.  Specifically, I want to be able to use node-static to server static files and some other app (yet to be determined) to server up my blog as flat files.  I&rsquo;ve done this before in Ruby using Rack and Sinatra&hellip;so I figure I would give Nodejs&rsquo;s Bogart a try!\n
 With a little bit of trial and error, I have come up with the best solution to this: Http-Proxy.</p>
 
@@ -646,9 +646,9 @@ The final part of this is configuring Bogart to use Http-proxy so that we can lo
   
   <entry>
     <title type="html"><![CDATA[Cloud9 IDE]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/09/cloud9-ide/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/01/09/cloud9-ide/"/>
     <updated>2013-01-09T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/09/cloud9-ide</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/01/09/cloud9-ide</id>
     <content type="html"><![CDATA[<p>A few days ago I went ahead and I install Cloud9 ide onto my laptop.  I&rsquo;ve been using the cloud version for editing this site as well as some other git-hub based sites and I love it.  I didn&rsquo;t think that I could love it even more then I did before, but I do!\n Locally, I can launch a workspace and start editing local files&hellip;and the console gives me complete shell access to my system!  I&rsquo;m working on a project that is being managed with subversion =( and the design team is using sass.  So when a change is made in the core style, I can go to the console and update the svn then compile sass with compass  and we are good to go!!
  Obviously I also use it with all my projects that are git based as well!!  It&rsquo;s very nice.  It&rsquo;s also very helpful with my New Years Resolution to learn Node.  Cloud9 is node based and gives a GREAT environment to develop node in.  Also, when I am using a single screen of the laptop, it&rsquo;s a great space saver.  C9 loads up in Chrome right next to the site I am working on.  I have all the Dev tools handy and can just go back and forth between the tabs!!
 So go ahead and give it a try!  You can install it as easy as pie&hellip;look into the git hub repo: <a href="https://github.com/ajaxorg/cloud9!!">https://github.com/ajaxorg/cloud9!!</a></p>
@@ -657,9 +657,9 @@ So go ahead and give it a try!  You can install it as easy as pie&hellip;look in
   
   <entry>
     <title type="html"><![CDATA[2013 is here people]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/07/2013-is-here-people/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/01/07/2013-is-here-people/"/>
     <updated>2013-01-07T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/01/07/2013-is-here-people</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/01/07/2013-is-here-people</id>
     <content type="html"><![CDATA[<p>Well, it&rsquo;s here.  2013.  We made it!  2012 was a blast, but now we have another year to make plans for and strive for greatness!  I am pleased to say that a majority of my resolutions from last year where meet!  So, in that spirit, I shall now give you all my goals for 2013\n
   * Learn Node.js
   * Finish my python VHost app
@@ -677,9 +677,9 @@ I&rsquo;ve install cloud9 ide on my laptop today (if you are wondering, I will b
   
   <entry>
     <title type="html"><![CDATA[Hark A Vagrant]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/12/09/hark-a-vagrant/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/12/09/hark-a-vagrant/"/>
     <updated>2012-12-09T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/12/09/hark-a-vagrant</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/12/09/hark-a-vagrant</id>
     <content type="html"><![CDATA[<p>Ok, so we start out today with a double reference!!  First we are paying homage to the incredibly funny web-comic Hark! A Vagrant.  If you are a history nerd certainly check it out!!(Hark A Vagrant).  But we are really talking about the really cool vm utility Vagrant.  In a nut shell: You download/load a VM packaged as a vagrant box.  It is loaded and run in the background using Virtual Box.  Once properly setup, you can ssh into it as well as view it&rsquo;s web contents in a browser. (using port forwarding).  It can also be provisioned using Chef or Puppet. \nWhat this means is that you can configure a custom server environment ready for your entire team and they can download it ready to go&hellip;.or if you want to save on downloadings..you can create a base system and then write a provisioning script that installs EVERYTHING that is needed.  It&rsquo;s a pretty sweet little setup!  It&rsquo;s also a great way to play around with different languages/environments on the fly.  I built my own base Debian Wheezy box and I have been using it to play around with Node.js without compromising my work environment!
 Some link love:</p>
 
@@ -703,18 +703,18 @@ vagrant boxes&hellip;)</p>
   
   <entry>
     <title type="html"><![CDATA[New Relic]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/12/03/new-relic/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/12/03/new-relic/"/>
     <updated>2012-12-03T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/12/03/new-relic</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/12/03/new-relic</id>
     <content type="html"><![CDATA[<p>I have been using New Relic on my commercial server for a while now.  It&rsquo;s a great way to monitor all your customers sites/apps and make sure that things are running smoothly.  I really enjoy the weekly reports and the daily warnings if things are not running right.  I recently had a report of high cpu usage on my personal server and it let me know exactly what was causing the problem, so when I ssh&#8217;ed in to the server, I knew exactly what I needed to do!! Go and setup a free trial account right now and once you deploy to your server, they will send you a really cool t-shirt!!  And don&rsquo;t worry about cost!!  They have a basic version for free&hellip;or several hosts (AppFog, Rackspace) offer free standard monitoring with your server!! New Relic</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Using like to make better queries]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/11/14/using-like-to-make-better-queries/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/11/14/using-like-to-make-better-queries/"/>
     <updated>2012-11-14T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/11/14/using-like-to-make-better-queries</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/11/14/using-like-to-make-better-queries</id>
     <content type="html"><![CDATA[<p>Today I am going to impart some more command line goodness on you! (You&rsquo;re welcome!)\n Last time we talked about using the     like term to pull out similar tables.  Now we will use it in a query to pull out similar values from a field.
  So here is the scenario: Let&rsquo;s say we are dealing with the WordPress options table.  All of our options are prefix with &lsquo;special_offers&rsquo;.  So rather then create multiple queries to pull the data from each one, we will use the like operator.</p>
 
@@ -765,9 +765,9 @@ Even though we got a little bit WordPress specific at the end, this is some good
   
   <entry>
     <title type="html"><![CDATA[Two pro tricks in MySQL]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/10/30/two-pro-tricks-in-mysql/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/10/30/two-pro-tricks-in-mysql/"/>
     <updated>2012-10-30T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/10/30/two-pro-tricks-in-mysql</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/10/30/two-pro-tricks-in-mysql</id>
     <content type="html"><![CDATA[<p>Chances are you use some form of gui when you interact with MySQL.  Imaright?  I don&rsquo;t.  I prefer to use the command line tools for pretty much everything that I do.  MySQL is no exceptions.  That being said, these two tricks are very helpful, even if you normally use a gui&hellip;in fact, the second trick will work in the gui&rsquo;s as well, &lsquo;cause it is really just some really cool sql.\n The first thing that we are looking at is how we end a sql statement. Typically, you use the &rsquo;;&lsquo; to end your statements like this:</p>
 
 <pre><code>SELECT * FROM table WHERE type="device";
@@ -805,36 +805,36 @@ entry_id: 4766
   
   <entry>
     <title type="html"><![CDATA[Finally Made it to 17]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/09/25/finally-made-it-to-17/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/09/25/finally-made-it-to-17/"/>
     <updated>2012-09-25T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/09/25/finally-made-it-to-17</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/09/25/finally-made-it-to-17</id>
     <content type="html"><![CDATA[<p>I usually like to on the cutting edge of my Linux, so it&rsquo;s kind of a shocker that I just now installed Fedora 17 on my laptop.  I intended t o do it much sooner, but important projects kept getting in the way.  I finally did a preupgrade and tried to update my live system&hellip;.but ended up crashing it anyway.  I did a reinstall and it was for the better.  I had a somewhat precarious partitioning scheme in place and I had recently upgrqaded my ram to the max 8 gigs for my machine&hellip;so some re-partitioning was certainly in order.\n I must say that I am impressed again with the latest Fedora offering.  Now I can&rsquo;t wait for 18!!</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[NorthEastern PHP Conference]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/08/19/northeastern-php-conference/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/08/19/northeastern-php-conference/"/>
     <updated>2012-08-19T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/08/19/northeastern-php-conference</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/08/19/northeastern-php-conference</id>
     <content type="html"><![CDATA[<p>\nThis last weekend I was up in Boston speaking and attending a php developers conference.  It was a magical weekend!  It&rsquo;s always great to be surrounded my fellow developers!  This was the first time the conference was held, and the folks behind it did a great job for a first time!  Got to spend time with old friends and made some great new ones!  I can&rsquo;t wait for more PHP development action!  It&rsquo;s now my goal to make it to PHP Benelux AND FOSSDEM for some back to back nerdiness in Belgium!</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Google Play]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/05/01/google-play/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/05/01/google-play/"/>
     <updated>2012-05-01T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/05/01/google-play</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/05/01/google-play</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a while since I&rsquo;ve posted, I know that. Been a bit busy. =) I want to write a bit about Google Play.  I uploaded most of my music a while back and it seems a good service.  The only issue that I had at the outset, was the lack of desktop integration.  Then I found Nuvola Player.  It is really a browser front end for several cloud music services, including Google Play&hellip;that also gives Desktop Integration.  So it&rsquo;s a cool deal.  It has become my new player.  I am gunning to get a lot of this stuff like music in the cloud so that I can access it from everything.  My next step is to really integrate Google Drive better, then my next major purchase will be the new Google Nexus&hellip;=)</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[POSSCON 2012 Day 2 and Afterthoughts]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/04/01/posscon-2012-day-2-and-afterthoughts/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/04/01/posscon-2012-day-2-and-afterthoughts/"/>
     <updated>2012-04-01T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/04/01/posscon-2012-day-2-and-afterthoughts</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/04/01/posscon-2012-day-2-and-afterthoughts</id>
     <content type="html"><![CDATA[<p>Well, Thursday was the closing day of POSSCON.  What can I say?  It was awesome sauce!  Great speakers, good times.  Scott McNeely&rsquo;s talk was good and full of perspective.  Don&rsquo;t agree with him on two topics: php and software patents&hellip;but I am more of a NGO type (if you were there, you&rsquo;ll get it!)\nThe BOF Lunch was good times too.  We had some good interest in the PHP users group.<br/>
 Bottom line: Can&rsquo;t wait until next year!</p>
 ]]></content>
@@ -842,18 +842,18 @@ Bottom line: Can&rsquo;t wait until next year!</p>
   
   <entry>
     <title type="html"><![CDATA[POSSCON 2012 Day 1]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/29/posscon-2012-day-1/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/03/29/posscon-2012-day-1/"/>
     <updated>2012-03-29T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/29/posscon-2012-day-1</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/03/29/posscon-2012-day-1</id>
     <content type="html"><![CDATA[<p>Well, I am not going to sleep until I blog about POSSCON.  It really started yesterday evening with the Engine Yard Beer Social.  That was a ton of fun! Then today we had a blast.  A bunch of great talks.  Dave Stokes gave a great talk about some of the new stuff to expect in the next version of MySQL&hellip;it&rsquo;s exciting.  Also, great talks from the president of SugarCRM, Mad Dog, and others.  It was a great start.  And of course then end of the day was the Git Hub Drink UP.  Wow!!  What a crowd!!  Certainly the biggest POSSCON ever!!</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Yay Updates!]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/24/yay-updates/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/03/24/yay-updates/"/>
     <updated>2012-03-24T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/24/yay-updates</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/03/24/yay-updates</id>
     <content type="html"><![CDATA[<p>So, I made two major updates to the blog code today.  First of all, I imported all my old blog posts going back to good old 2008.  Secondly, I added pagination to the blog so you can view all the old posts!! Yay me!!\n
 In other news, POSSCON Is getting closer!  This year I will do a better job of blogging it!</p>
 ]]></content>
@@ -861,9 +861,9 @@ In other news, POSSCON Is getting closer!  This year I will do a better job of b
   
   <entry>
     <title type="html"><![CDATA[PHP 5.4.0 is out!  Web Server Review!]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/19/php-5-4-0-is-out-web-server-review/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/03/19/php-5-4-0-is-out-web-server-review/"/>
     <updated>2012-03-19T00:00:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/19/php-5-4-0-is-out-web-server-review</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/03/19/php-5-4-0-is-out-web-server-review</id>
     <content type="html"><![CDATA[<p>Let me start out by saying that I have been waiting for this feature for a while now.  When ever I male forays into the world of Rails and Python I always come back to php just a little bit jealous of the testing servers that come with them.  Well, in just a little bit, I will be jealous no more!! \n First things first.  We must install the latest version of php.  I use Fedora for my development machine, so I am going to give you the steps you need in YUM for doing this.  I recommend a little google search for the easiest way to do this in your distro&hellip;.actually, you really need to setup a repo that will let you keep to the latest version of php anyway.
  I use the YUM repo at <a href="http://rpms.famillecollet.com/fedora/16/remi/x86_64/.">http://rpms.famillecollet.com/fedora/16/remi/x86_64/.</a> To install the repo into your system type:</p>
 
@@ -900,9 +900,9 @@ So, to run the server, we cd into our site and type a simple:     php -S localho
   
   <entry>
     <title type="html"><![CDATA[Finally, the feed works]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/08/finally-the-feed-works/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/03/08/finally-the-feed-works/"/>
     <updated>2012-03-08T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/08/finally-the-feed-works</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/03/08/finally-the-feed-works</id>
     <content type="html"><![CDATA[<p> I finally had the time to sit down and write a RSS feed for my blog.  I obviously wrote it in php using codeigniter.  There are a few good tutorials out there, but let me add my own ten cents to the pile!!\n
  So the first spot is the controller.  I created a controller called Feed.  I also could have just created a method under my Blog controller, but I find this is a little bit neater code.</p>
 
@@ -928,18 +928,18 @@ So, to run the server, we cd into our site and type a simple:     php -S localho
   
   <entry>
     <title type="html"><![CDATA[The Importance of Wireframes]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/01/the-importance-of-wireframes/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/03/01/the-importance-of-wireframes/"/>
     <updated>2012-03-01T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/03/01/the-importance-of-wireframes</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/03/01/the-importance-of-wireframes</id>
     <content type="html"><![CDATA[<p>The creation of a wireframe is a very important part of the web development process.  Lots of different designers have their own way.  There are programs that you can use to make wireframes.  I personally prefer to draw mine by hand.  Here is an example of a few screens that I designed for a client. (add wireframe png later)</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Some coding with my daughter]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/01/25/some-coding-with-my-daughter/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2012/01/25/some-coding-with-my-daughter/"/>
     <updated>2012-01-25T00:00:00-05:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2012/01/25/some-coding-with-my-daughter</id>
+    <id>http://www.weatheredwatcher.com/blog/2012/01/25/some-coding-with-my-daughter</id>
     <content type="html"><![CDATA[<p>Technically we try and do this the first of the year, but time was not on our side.  For one thing, Luba started school this past fall, so we have a lot of stuff to do with that.  Also, I&rsquo;ve been very busy as well. But, better late then never!  This year I decided to introduce her to compiling&hellip;(she saw me compiling some server extensions and asked me why it was doing it by itself).  So, I&rsquo;ve been going back to my youth and playing around with c++ the past week (I am planning on getting back into application development) and so here is a cool little bit of code, daddy/daughter style.\n</p>
 
 <div><script src='https://gist.github.com/1678814.js'></script>

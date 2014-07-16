@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: php | weatheredwatcher]]></title>
-  <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/categories/php/atom.xml" rel="self"/>
-  <link href="http://weatheredwatcher.github.io/weatheredwatcher/"/>
-  <updated>2014-06-30T23:41:35-04:00</updated>
-  <id>http://weatheredwatcher.github.io/weatheredwatcher/</id>
+  <link href="http://www.weatheredwatcher.com/blog/categories/php/atom.xml" rel="self"/>
+  <link href="http://www.weatheredwatcher.com/"/>
+  <updated>2014-07-15T23:00:51-04:00</updated>
+  <id>http://www.weatheredwatcher.com/</id>
   <author>
     <name><![CDATA[weatheredwatcher]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Zend Style Config Files Everywhere]]></title>
-    <link href="http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere/"/>
+    <link href="http://www.weatheredwatcher.com/blog/2013/07/02/using-zend-config-files-everywhere/"/>
     <updated>2013-07-02T10:46:00-04:00</updated>
-    <id>http://weatheredwatcher.github.io/weatheredwatcher/blog/2013/07/02/using-zend-config-files-everywhere</id>
+    <id>http://www.weatheredwatcher.com/blog/2013/07/02/using-zend-config-files-everywhere</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been a while since my last blog entry, I know!!  I feel bad, so here is a bit of php goodness to make us all feel better!</p>
 
 <p>It&rsquo;s always a good security practice to remove configuration from your web-app.  One way to do this is to use a configuration file.  Now, Zend has a very cool way of doing this,(<code>Zend\Config\Reader</code>) but the client that I am with right now is using a solution based on Codeigniter.  However, since they are planning on eventually moving to Zend anyway, I figured I would implement a solution based on the Zend config solution.</p>
