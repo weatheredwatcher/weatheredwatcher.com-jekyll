@@ -54,4 +54,4 @@ If you would rather use rsync:
     rsync -r localfolder/ user@remotehost:/path/to/server
 
 
-
+It's not rocket science people!  Learn some basic Linux!
