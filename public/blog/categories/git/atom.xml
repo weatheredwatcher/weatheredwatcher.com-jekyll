@@ -4,7 +4,7 @@
   <title><![CDATA[Category: git, | weatheredwatcher]]></title>
   <link href="http://www.weatheredwatcher.com/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://www.weatheredwatcher.com/"/>
-  <updated>2014-08-23T14:57:16-04:00</updated>
+  <updated>2014-08-23T15:01:30-04:00</updated>
   <id>http://www.weatheredwatcher.com/</id>
   <author>
     <name><![CDATA[weatheredwatcher]]></name>
@@ -69,6 +69,8 @@ especially if you already have a key setup on the remote server.  The syntax is 
 
 <pre><code>rsync -r localfolder/ user@remotehost:/path/to/server
 </code></pre>
+
+<p>It&rsquo;s not rocket science people!  Learn some basic Linux!</p>
 ]]></content>
   </entry>
   
