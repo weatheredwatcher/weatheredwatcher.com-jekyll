@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n I have been using Google &ldquo;products&rdquo; for years now. When every something new comes out, I just have to give it a try. I love Google &hellip;">
+  <meta name="description" content="\n I&rsquo;ve been exploring Object Oriented Programming with JavaScript. It&rsquo;s been an interesting experience because JavaScript is not really &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/12/24/classless-object-oriented-javascript-programming-lesson-1/">Classless Object Oriented JavaScript Programming (Lesson 1)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-12-24T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    I&rsquo;ve been exploring Object Oriented Programming with JavaScript.  It&rsquo;s been an interesting experience because JavaScript is not really a traditional Object Oriented Language but rather a prototype language.  Prototype is  a type of object oriented language that is classless.  In a prototype language, inheritance is achieved by reusing prototypes of objects.  It is a fascinating model.    So let&rsquo;s get started on our exploration of class-less object oriented programming
+The first thing of note is that we are not actually creating a class (note:Classless Object Oriented JavaScript) Essentially, all we are going to do is create the equivilent of a constructor.  Our constructor will have an alert box that fires whenever we create a new object, as well as some basic properties of our car.
+Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a great way to make sure it&rsquo;s working!  Now lets add some variables to our class.  For a car we will need a make a model and a color.</p>
+
+<p>Now, after the function, we need to do a little bit more.</p>
+
+<p>This sets the default value of the make, model and color.  It also introduces us to the prototype property.  Later, we will use this prototype property to create our sports car class that inherits the Car class.   Now we are all set to create some cars!</p>
+
+<p>The cool thing about JavaScript is how methods are handled.  We actually define a function with the prototype property.  Just remember that we need to use &lsquo;this&rsquo; to access the variable in the class.</p>
+
+<p>Go ahead and play around a bit with this.  Next, we will talk about how you can use prototype to create another class that inherits another class.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -408,48 +454,6 @@ echo $myCar-&gt;get_model();
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/03/why-do-you-think-its-called-computer-science/">Why Do You Think It&#8217;s Called Computer Science?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-03T00:00:00-05:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    Editing this post a little bit due to feed back from my friends.  I really didn&rsquo;t make my self clear originally.</p>
-
-<p>For starters, I would like to quote something from reddit <a href="http://www.reddit.com/r/programming/comments/9vglo/dae_find_programmers_difficult_to_work_with/">full post</a></p>
-
-<blockquote><p>I guess what it really comes down to is that programmers, especially young ones, need to be right and need to be seen as super smart. >They crave rules, discipline and order while at the same time regarding themselves as creative and ingenious beings. They seem to need >these things as if their entire self-image depends on it, cognitive dissonance be damned.</p></blockquote>
-
-<p>I was reading this post the otherday,  and it dawned on me how many times I&rsquo;ve heard programming and art used in the same sentence.  WordPress even has the phrase &ldquo;Code is Poetry&rdquo; on their website.  I don&rsquo;t know about you, but the last time that I looked at the degree, it says BS degree and the major is &ldquo;Computer Science.&rdquo;  My friend Ian and I have also had several discussions on this topic.  My thoughts on this are that we are engineers, not artists.  At the end of the day, the client who pays me will not care if my code looks like &ldquo;Poetry&rdquo; or is &ldquo;beautiful&rdquo;  He or she will only care if it works.  Now, this doesn&rsquo;t mean that I believe in sloppy code writing, and yes, code can be beautiful.  The cleaner the code the easier it is to read.  Jed mentioned a great article in the comments below and I think that it puts a great view on it all.  At the end of the day, I feel that we should always place the greater emphasis on the science and not the art.  Of course, this is just the opinion of one man and if you don&rsquo;t agree with me, thats okay.  We can still be friends :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -483,6 +487,10 @@ echo $myCar-&gt;get_model();
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
       </li>
     
@@ -496,10 +504,6 @@ echo $myCar-&gt;get_model();
     
       <li class="post">
         <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
       </li>
     
   </ul>

@@ -56,8 +56,8 @@ default_asides: [custom/asides/gravatar.html, custom/asides/about.html, custom/a
 # and add an array with the asides you want to use.
 # blog_index_asides:
 # post_asides:
-# page_asides:
-
+page_asides:
+about_asides:  [asides/recent_posts.html, asides/github.html, asides/twitter.html, custom/asides/spotify.html, custom/asides/fedora.html, custom/asides/conference.html, asides/googleplus.html]
 # ----------------------- #
 #   3rd Party Settings    #
 # ----------------------- #

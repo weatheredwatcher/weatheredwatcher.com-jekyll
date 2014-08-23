@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n Okay, so here is the situation: I promised my brother that I&rsquo;d email him my current resume a week ago. I currently do not live in a place &hellip;">
+  <meta name="description" content="\n Just made a few updates. I added some simple jQuey navigation elements to my ruby on rails site as well as some simple session managment to my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/18/some-updates/">Some Updates</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-18T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Just made a few updates. I added some simple jQuey navigation elements      to my ruby on rails site as well as some simple session managment to my personal site. As session management is very important to a dynamic site, I&rsquo;ll more than likely use that as my next tutorial entry.</p>
+
+<p>Currently without work for three weeks, hopefull. Things are looking good as far as prospects.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -263,92 +301,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/08/01/a-simple-php-contact-form/">A Simple PHP Contact Form</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-08-01T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    Let&rsquo;s take a little break from the MVC concept and look at a simple but effective PHP mailer.  Like the PHP framework, I wrote this mailer from scratch just to show how easy it is to code pure PHP applications.</p>
-
-<p>Lets first look at a bit of PHP &ldquo;magic.&rdquo;</p>
-
-<pre><code>if (isset($_POST['Submit'])){
-    send_mail($_POST['subject'], $_POST['message'], $_POST['header']);
-}
- else {
-    show_form();
-}
-</code></pre>
-
-<p>Okay, time to break it down.</p>
-
-<pre><code>if (isset($_POST['Submit']))
-</code></pre>
-
-<p>This checks the post to see if a submit button was pressed.  If so, it will carry out the code:</p>
-
-<pre><code>send_mail("me@mysite.com", $_POST['subject'], $_POST['message'], $_POST['header']);
-</code></pre>
-
-<p>If there was no submit, because the page has just been loaded or an error occured, the following code is ran:</p>
-
-<pre><code>show_form();
-</code></pre>
-
-<p>The remainder of the program is contained in two functions, both of which we have already referred to.  The first function is simple enough. It contains a single echo statement that creates the html code for a form.</p>
-
-<p>The second function, sends the mail.</p>
-
-<pre><code>function send_mail($subject, $message, $header){
-    $to = "myemail@mysite.com";
-    mail($to, $subject, $message, $header);
-    echo("Thank you for sending me an email....I'll get back to you as soon as I can");
-}
-</code></pre>
-
-<p>We could convert the POSTS to variables before we use them.</p>
-
-<pre><code>$subject = $_POST['subject'];
-$message = $_POST['message'];
-$header = $_POST['header'];
-</code></pre>
-
-<p>This allows us to make some modifications to the header.</p>
-
-<pre><code>from = "From:".$header;
-</code></pre>
-
-<p>This is of course is a very simple implementation of the PHP mail function.  You can find a great deal more information on the PHP website.  Stay tuned for our next installment.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -382,6 +334,10 @@ $header = $_POST['header'];
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
       </li>
     
@@ -395,10 +351,6 @@ $header = $_POST['header'];
     
       <li class="post">
         <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
       </li>
     
   </ul>

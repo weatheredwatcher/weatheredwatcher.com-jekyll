@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Server Stuff a Developer Needs to Know (part 1) - weatheredwatcher</title>
+  <meta name="author" content="weatheredwatcher">
+
+  
+  <meta name="description" content="Recently I have been moving more and more away from development and more into System Administration. Still, my skills and experience in programming &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.weatheredwatcher.com/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="weatheredwatcher" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.weatheredwatcher.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+    <li><a href="/">
+        <span class="blue_light">
+            weatheredwatcher
+        </span>
+       
+           <span id="sub-title" class="blue_dark">
+             ...creating chaos since 1981
+           </span>
+       
+    </a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="entry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Server Stuff a Developer Needs to Know (Part 1)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-23T00:11:28-04:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Recently I have been moving more and more away from development and more into System Administration.  Still, my skills and experience in programming
+means that I also have a good handle on developers. So I have been making a effort to move in the direction of DevOps.  I do some consultation work for
+a startup that is currently coming out of the USC Incubator.  I mostly contribute as the Architect and help provide direction to the infrastructure and
+coding best practices as well as run their servers.  So this fits perfectly in the role of DevOps.  One of the things that has really begun to frustrate me
+is the lack of BASIC linux skills in developers that should know better.  I am not asking you to setup a fucking mail server or configure a load balancer.
+I can do those things just fine without your help.  But there are certain things that a developer NEEDS to know how to do. So, here is the first in a series of posts
+on some things that in my humble opinion a developer should be able to do without me holding their goddamn hand!</p>
+
+<h2>Logging into and Deploying Code to a Server</h2>
+
+<p>Guys, this is not that hard.  First of all: A secure server should be using ssh &mdash; NOT ftp.  Do not ask me for FTP access to my server.  I will not
+give it to you.  No matter how many times you ask me to.</p>
+
+<p>You can connect to a server using ssh like this:</p>
+
+<pre><code>ssh username@hostname
+</code></pre>
+
+<p>If you do not want to use a password, or if I decide not to give you one, you will need to provide me with a public key.  It is fairly easy.  On a
+Linux/Unix system, in the termianl type:</p>
+
+<pre><code>ssh-keygen -t rsa -f ~/.ssh/id_rsa
+</code></pre>
+
+<p>This will give you a key pair. Email me the one with the .pub extension</p>
+
+<pre><code>id_rsa.pub
+</code></pre>
+
+<p>Running Windows?  Either install git and use git-bash or install Cygwin and run the Bash shell.  The above commands will work for you too.</p>
+
+<p>Then you should be able to log in without a password.   Having issues?</p>
+
+<pre><code>ssh user@hostname -i ~/.ssh/id_rsa.pub
+</code></pre>
+
+<p>Rather do it yourself? Once you have logged in to the server with your given user name, you can add your key to the authorized_keys file.</p>
+
+<p>It needs to be in a file called  ~/.ssh/authorized_keys</p>
+
+<p>Now on to deployment.  Most of the time there is going to be some procedure in place for production deployments, but not so much on a dev server.
+You should be able to upload your code to the server. Aside from using git, which is just easy, I personally like secure copy or scp.  It is fairly simple to use,
+especially if you already have a key setup on the remote server.  The syntax is easy:</p>
+
+<pre><code>scp -r localfolder/ user@remotehost:/path/to/server
+</code></pre>
+
+<p>If you would rather use rsync:</p>
+
+<pre><code>rsync -r localfolder/ user@remotehost:/path/to/server
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">weatheredwatcher</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-23T00:11:28-04:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>DevOps,</a>, <a class='category' href='/blog/categories/bash/'>bash,</a>, <a class='category' href='/blog/categories/git/'>git,</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.weatheredwatcher.com/blog/2014/08/23/server-stuff-a-developer-needs-to-know/" data-via="davidduggins" data-counturl="http://www.weatheredwatcher.com/blog/2014/08/23/server-stuff-a-developer-needs-to-know/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/08/07/devops-building-projects-with-ant/" title="Previous Post: DevOps: Bulding Projects with Ant">&laquo; DevOps: Bulding Projects with Ant</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/ccb5d4d24f11aa4bf8388dab7051ef38" alt="Gravatar of weatheredwatcher " title="Gravatar of weatheredwatcher" />
+	</span>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>Born in 1981 and creating chaos ever since.  Father.  Geek.  Free Software Enthusist</p>
+</section>
+<section id="badges">
+      <a href="http://debian.org/"><img src="http://www.debian.org/logos/button-mini.png"></a>
+	    <a href="http://fedoraproject.org/"><img src="images/fedora_button.png" alt=""></a>
+	    <a href="http://www.catb.org/hacker-emblem/"><img src="http://www.weatheredwatcher.com/img/hacker.png" alt=""></a>
+	    <a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="http://www.weatheredwatcher.com/img/cc-license_80x15.png" alt=""></a>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/02/using-zend-config-files-everywhere/">Using Zend Style Config Files Everywhere</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/01/preparing-a-dev-environment-with-puppet/">Preparing a Dev Environment with Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/weatheredwatcher">@weatheredwatcher</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'weatheredwatcher',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+<a class="twitter-timeline"  href="https://twitter.com/DavidDuggins"  data-widget-id="469096456695980032">Tweets by @DavidDuggins</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+</section>
+<section>
+  <h2> Coding Playlist </h2>
+<iframe src="https://embed.spotify.com/?uri=spotify:user:weatheredwatcher:playlist:5xsZotbtCqUi9BdmXzPJhC" width="250" height="330" frameborder="0" allowtransparency="true"></iframe>
+</section>
+<section id="fedora_badge">
+  <a href="http://fedoraproject.com/en_GB/get-fedora"><img alt="Fedora 20 Heisenbug is here!" src="http://fedoraproject.org/static/images/banners/f20release.png"></a>
+</section>
+<section id="conferencs">
+   <a href="http://www.northeastphp.org"><img src="http://www.northeastphp.org/boston_conference/img/logo.png" alt="I'm Speaking at NEPHP Conference, Boston" border="0"></a>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - weatheredwatcher -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weatheredwatcher';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.weatheredwatcher.com/blog/2014/08/23/server-stuff-a-developer-needs-to-know/';
+        var disqus_url = 'http://www.weatheredwatcher.com/blog/2014/08/23/server-stuff-a-developer-needs-to-know/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

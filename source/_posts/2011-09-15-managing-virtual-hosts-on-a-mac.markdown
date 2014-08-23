@@ -1,4 +1,5 @@
 ---
+layout: entry
 title: Managing Virtual Hosts on a Mac
 ---
 

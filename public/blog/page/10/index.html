@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="One major headache in any major project is how you are going to handle the errors. For starters, it is not a good idea to show errors on a live, &hellip;">
+  <meta name="description" content="\n So here is the background: At our last Mac User&rsquo;s Group gathering, my good friend and Ruby on Rails Jedi, Jed Schneider in the process of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/02/18/everytime-i-look-at-ruby-i-just-have-to-say-wow/">Everytime I Look at Ruby I Just Have to Say &#8220;Wow&#8221;</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-02-18T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    So here is the background:  At our last Mac User&rsquo;s Group gathering, my good friend and Ruby on Rails Jedi, Jed Schneider in the process of his talk showed a pretty nifty little ruby script that created a single file that repeated the same line over and over again a set number of times.  It was pretty sweet.  Fast forward to almost a week later and I am having to create a massive amount of test data for some final testing.  I need to create a grand total of 61 csv files, all with different names but that contain the same five email address (as well as some other information)  So I decided to try and implement a solution in Ruby, drawing on the concepts of Jed&rsquo;s script. <a href="http://www.iangreulichonline.com">Ian</a>and I sat down for a spare second and knocked out a little script that does just that.</p>
+
+<p>Surprisingly enough (or un-surprisingly enough if you are a ruby programmer) that&rsquo;s all she wrote.</p>
+
+<p>The line 1.upto(61) relies on the fact that in Ruby everything is an object.  We want to output the numbers 1 through 61.  We use |i| to catch the output into a variable i then use File.open to create a file called test1.csv through test61.csv.  For each file we want to write some lines.  Each line can be written with file.puts.  Notice that we pass the name of our file to a variable called file with |file| just like we did for i above.</p>
+
+<p>So after I created 61 csv files with different names but the same data, I decided to check and see if ruby could help me with any of the other test data generation.  Of course it could!</p>
+
+<p>The next little bit of code is really just based on the code above.  Instead of writing the same line of data to 61 different files, I wanted to write 61 different email address to one file, using the same base.</p>
+
+<p>Considering that this is pretty much the same as the previous script, only inside out, I&rsquo;m sure you can figure it out without much effort.</p>
+
+<p>This Ruby Wow Moment was brought to you by the Letter R and the Number Awesome</p>
+
+<p>Questions? Comments?  Any ruby Jedi&rsquo;s out there that can see of a better way of doing this?  I await your comments with much anticipation!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -314,52 +364,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/12/24/classless-object-oriented-javascript-programming-lesson-1/">Classless Object Oriented JavaScript Programming (Lesson 1)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-12-24T00:00:00-05:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    I&rsquo;ve been exploring Object Oriented Programming with JavaScript.  It&rsquo;s been an interesting experience because JavaScript is not really a traditional Object Oriented Language but rather a prototype language.  Prototype is  a type of object oriented language that is classless.  In a prototype language, inheritance is achieved by reusing prototypes of objects.  It is a fascinating model.    So let&rsquo;s get started on our exploration of class-less object oriented programming
-The first thing of note is that we are not actually creating a class (note:Classless Object Oriented JavaScript) Essentially, all we are going to do is create the equivilent of a constructor.  Our constructor will have an alert box that fires whenever we create a new object, as well as some basic properties of our car.
-Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a great way to make sure it&rsquo;s working!  Now lets add some variables to our class.  For a car we will need a make a model and a color.</p>
-
-<p>Now, after the function, we need to do a little bit more.</p>
-
-<p>This sets the default value of the make, model and color.  It also introduces us to the prototype property.  Later, we will use this prototype property to create our sports car class that inherits the Car class.   Now we are all set to create some cars!</p>
-
-<p>The cool thing about JavaScript is how methods are handled.  We actually define a function with the prototype property.  Just remember that we need to use &lsquo;this&rsquo; to access the variable in the class.</p>
-
-<p>Go ahead and play around a bit with this.  Next, we will talk about how you can use prototype to create another class that inherits another class.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -393,6 +397,10 @@ Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a g
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
       </li>
     
@@ -406,10 +414,6 @@ Now, when ever we create a new Car prototype, we get this alert.  It&rsquo;s a g
     
       <li class="post">
         <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
       </li>
     
   </ul>

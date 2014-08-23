@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="Well, it&rsquo;s here. 2013. We made it! 2012 was a blast, but now we have another year to make plans for and strive for greatness! I am pleased to &hellip;">
+  <meta name="description" content="A few days ago I went ahead and I install Cloud9 ide onto my laptop. I&rsquo;ve been using the cloud version for editing this site as well as some &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-09T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A few days ago I went ahead and I install Cloud9 ide onto my laptop.  I&rsquo;ve been using the cloud version for editing this site as well as some other git-hub based sites and I love it.  I didn&rsquo;t think that I could love it even more then I did before, but I do!\n Locally, I can launch a workspace and start editing local files&hellip;and the console gives me complete shell access to my system!  I&rsquo;m working on a project that is being managed with subversion =( and the design team is using sass.  So when a change is made in the core style, I can go to the console and update the svn then compile sass with compass  and we are good to go!!
+ Obviously I also use it with all my projects that are git based as well!!  It&rsquo;s very nice.  It&rsquo;s also very helpful with my New Years Resolution to learn Node.  Cloud9 is node based and gives a GREAT environment to develop node in.  Also, when I am using a single screen of the laptop, it&rsquo;s a great space saver.  C9 loads up in Chrome right next to the site I am working on.  I have all the Dev tools handy and can just go back and forth between the tabs!!
+So go ahead and give it a try!  You can install it as easy as pie&hellip;look into the git hub repo: <a href="https://github.com/ajaxorg/cloud9!!">https://github.com/ajaxorg/cloud9!!</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -284,73 +322,6 @@ Even though we got a little bit WordPress specific at the end, this is some good
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/30/two-pro-tricks-in-mysql/">Two Pro Tricks in MySQL</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-30T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Chances are you use some form of gui when you interact with MySQL.  Imaright?  I don&rsquo;t.  I prefer to use the command line tools for pretty much everything that I do.  MySQL is no exceptions.  That being said, these two tricks are very helpful, even if you normally use a gui&hellip;in fact, the second trick will work in the gui&rsquo;s as well, &lsquo;cause it is really just some really cool sql.\n The first thing that we are looking at is how we end a sql statement. Typically, you use the &rsquo;;&lsquo; to end your statements like this:</p>
-
-<pre><code>SELECT * FROM table WHERE type="device";
-</code></pre>
-
-<p>A pro trick is to use &ldquo;\G&rdquo; like this:</p>
-
-<pre><code>DESCRIBE table\G
-</code></pre>
-
-<p>So what is the difference?  Well, &ldquo;\G&rdquo; gives a much easier to read print out of the data then the traditional tabular form.</p>
-
-<pre><code>mysql&gt; select * from cms_phone_features where entry_id=4766\G 
-*************************** 1. row *************************** 
-entry_id: 4766
-  row_id: 18973
-  row_order: 0
-  style: Touch Screen
-  keyboard: Virtual
-  camera_front: 1.3-megapixel
-  camera_rear: 3.2-megapixel
-1 row in set (0.00 sec)
-</code></pre>
-
-<p> The second trick that we are going to show today is some cool sql.  So here is the scenario:  You are dealing with a very large database with a massive amount of tables.  Now, all you really want to deal with are a subset of these tables.  They all happen to be prefixed &lsquo;ds_&rsquo;.  So how can we list just these tables?</p>
-
-<pre><code>show tables like 'ds%'\G
-</code></pre>
-
-<p>The &lsquo;like&rsquo; term will list tables like whatever string you follow with.  The string must be in &lsquo;&rsquo; and the % is a wildcard that matches anything.</p>
-
-<p> Not so bad huh?  As I am trying to strengthen my dba chops, you will be seeing database specific entries mixed in with my programming entries.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -384,6 +355,10 @@ entry_id: 4766
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
       </li>
     
@@ -397,10 +372,6 @@ entry_id: 4766
     
       <li class="post">
         <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
       </li>
     
   </ul>

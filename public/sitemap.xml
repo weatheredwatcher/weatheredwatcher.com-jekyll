@@ -368,7 +368,7 @@
         <loc>
             http://www.weatheredwatcher.com/blog/2011/09/15/managing-virtual-hosts-on-a-mac/
         </loc>
-        <lastmod>2014-06-30T01:08:31-04:00</lastmod>
+        <lastmod>2014-07-17T00:46:50-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.weatheredwatcher.com/blog/2011/12/22/a-new-day-and-a-new-blog/</loc>
@@ -487,16 +487,22 @@
         <lastmod>2014-07-15T22:58:40-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://www.weatheredwatcher.com/blog/2014/08/23/server-stuff-a-developer-needs-to-know/
+        </loc>
+        <lastmod>2014-08-23T14:57:15-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.weatheredwatcher.com/about/</loc>
-        <lastmod>2014-07-15T22:59:29-04:00</lastmod>
+        <lastmod>2014-07-17T00:32:57-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.weatheredwatcher.com/blog/archives/</loc>
-        <lastmod>2014-06-30T23:41:34-04:00</lastmod>
+        <lastmod>2014-08-23T14:57:15-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.weatheredwatcher.com/</loc>
-        <lastmod>2014-06-30T23:41:34-04:00</lastmod>
+        <lastmod>2014-08-23T14:57:15-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.weatheredwatcher.com/robots.txt</loc>

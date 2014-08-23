@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="I can&rsquo;t tell you how many times I&rsquo;ve seen passwords put in databases using the md5 function that is built into php. It is fast, easy to &hellip;">
+  <meta name="description" content="Technically we try and do this the first of the year, but time was not on our side. For one thing, Luba started school this past fall, so we have a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,98 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/01/25/some-coding-with-my-daughter/">Some Coding With My Daughter</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-25T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Technically we try and do this the first of the year, but time was not on our side.  For one thing, Luba started school this past fall, so we have a lot of stuff to do with that.  Also, I&rsquo;ve been very busy as well. But, better late then never!  This year I decided to introduce her to compiling&hellip;(she saw me compiling some server extensions and asked me why it was doing it by itself).  So, I&rsquo;ve been going back to my youth and playing around with c++ the past week (I am planning on getting back into application development) and so here is a cool little bit of code, daddy/daughter style.\n</p>
+
+<div><script src='https://gist.github.com/1678814.js'></script>
+<noscript><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+
+struct person_t {
+    string name;
+    int age;
+    
+} mine, yours;
+
+    void printperson (person_t person);
+    void compare_us();
+    
+    
+int main (){
+
+    string mystr;
+    
+    mine.name = &quot;David&quot;;
+    mine.age = 30;
+    cout &lt;&lt; &quot;What is your name?: &quot;;
+    getline (cin,yours.name);
+    cout &lt;&lt; &quot;How Old Are You?: &quot;;
+    getline (cin,mystr);
+    stringstream(mystr) &gt;&gt; yours.age;
+    
+    cout &lt;&lt; &quot;My name is:\n &quot;;
+    printperson (mine);
+    cout &lt;&lt; &quot;And your name is:\n &quot;;
+    printperson (yours);
+    compare_us();
+    
+        return 0;
+}
+
+void printperson (person_t person){
+    
+    cout &lt;&lt; person.name;
+    cout &lt;&lt; &quot; (&quot; &lt;&lt; person.age &lt;&lt; &quot;) \n&quot;;
+    
+}
+
+void compare_us(){
+    
+    int difference = mine.age - yours.age;
+    cout &lt;&lt; &quot;I am &quot; &lt;&lt; difference &lt;&lt; &quot; years older!&quot;;
+}
+</code></pre></noscript></div>
+
+
+<p> If you are not familiar with the C languages, I am making use of a struct&hellip;.this is essentially the same as a class.  It&rsquo;s declared a bit differently, but the end is the same.  We created a person template in our structure and called two instances of it, yours and mine.
+The first time that we compiled, it just asked for name and age.  Then we added the method to calculate the difference in the ages.  Obviously we need more structure to make sure that if the first person is younger then the second it will still be correct, but for a bit of daddy/daughter time it suffices.
+ Fun was making mistakes and watching her see the compiler catch them!  Damn I love raising a geek..I do not know what I would do if she were interested in stuff like sports&hellip;=)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -224,43 +316,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/12/22/a-new-day-and-a-new-blog/">A New Day and a New Blog</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-22T00:00:00-05:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Well, here we are!  I&rsquo;ve noticed that with all the transferring things back and forth between blog systems has really done a little number on my entries!  A lot of the source code is gone..=/\nSo, here I am starting a brand new blog.  I have totally rewritten everything (again!) in Codeigniter.  I decided a while ago to basically accept the fact that I am a php developer and just leave it at that.  So, I have found a great MVC framework to work with, as well as an awesome platform to run everything on.  I will be trying to get my older blog entries placed here on this blog, but for the time being, you can take a peek at them on my posterous site (that is certainly the best place to view them) weatheredwatcher.posterous.com.
- In other news, the start up that I have been working on has had a few issues (mainly health issues on my part!) but is back on track to launch very soon.  I have also merged my consultancy with another group and starting January first, we will be really going after high end clients.My role is one of leadership and mainly I will be project managing rather then actually coding.  Hopfully this will allow me time to work more on some person projects as well as be a bit more active in the OSS community.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -294,6 +349,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
       </li>
     
@@ -307,10 +366,6 @@
     
       <li class="post">
         <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
       </li>
     
   </ul>

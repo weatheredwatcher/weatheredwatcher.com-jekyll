@@ -9,7 +9,7 @@
   <meta name="author" content="weatheredwatcher">
 
   
-  <meta name="description" content="\n Just thought that I would post a screenshot of my Desktop today.  Gentoo Linux with Songbird running. ">
+  <meta name="description" content="\n Friday night I ran some code on the server and I had made a tiny but fatal error. I mixed up a pair of booleans and code that should have made one &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/11/13/drop-that-table-like-it-was-hot/">Drop That Table Like It Was Hot!!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-13T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>\n    Friday night I ran some code on the server and I had made a tiny but fatal error.  I mixed up a pair of booleans and code that should have made one set of seven tables, made thoose seven table over 1000 times!!  My mySql GUI tools were not upto the challenge.  I found a nifty little bit of code on the internet <a href="http://knaddison.com/technology/mysql-drop-all-tables-database-using-single-command-line-command">Check out the original here</a> that drops all the tables in database.  Drops &lsquo;em like they were hot!!</p>
+
+<pre><code>mysql -u uname dbname -e "show tables" | grep -v Tables_in | grep -v "+" |
+gawk '{print "drop table " $1 ","}' | mysql -u uname dbname
+</code></pre>
+
+<p>You could even do this from the iPhone!!  Here is a breakdown for anyone that is a bit rusty on bash:</p>
+
+<pre><code>mysql -u uname dbname -e "show tables"
+</code></pre>
+
+<p>This  (where uname is your username and dbname is your database name) run by itself will show you all the tables in the database.  You have to add the option &mdash;password=password if the mysql is protected.</p>
+
+<p>You then pipe it twice through grep -v (this show all BUT what you specify in grep.  And here comes the great part&hellip;.</p>
+
+<pre><code>gawk '{print "drop table " $1 ","}' | mysql -u uname dbname
+</code></pre>
+
+<p>You use gawk to print out &ldquo;drop table&rdquo; and pipe that through mysql again (just repeat minus the -e &ldquo;show tables&rdquo;)</p>
+
+<p>And viola!  problem solved!!</p>
+
+<p>David</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -216,42 +274,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/10/01/the-tao-of-wordpress-part-ii/">The Tao of Wordpress Part II</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-10-01T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>\n    One of the things that became nessecary in my current project is the need to keep people from seeing Wordpress.  We don&rsquo;t want the faculty to get confused.  So a simple redirect has to be placed in the wp-login.php file</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -285,6 +307,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/23/server-stuff-a-developer-needs-to-know/">Server Stuff a Developer Needs to Know (part 1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/07/devops-building-projects-with-ant/">DevOps: Bulding Projects with Ant</a>
       </li>
     
@@ -298,10 +324,6 @@
     
       <li class="post">
         <a href="/blog/2013/01/24/running-multiple-apps-on-nodejs/">Running Multiple Apps On NodeJs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/09/cloud9-ide/">Cloud9 IDE</a>
       </li>
     
   </ul>
